@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外包廠商入廠施工安全告知與電子簽署系統</title>
+  
+  <!-- 載入 SignaturePad (簽名板) 與 html2pdf (PDF輸出) 套件 -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body { background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
+    .container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    
+    .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
+    .header h1 { margin: 0; color: #0f172a; font-size: 24px; }
+    .header p { margin: 5px 0 0; color: #64748b; font-size: 14px; }
+
+    /* 表單與查詢區 */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 8px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #334155; }
+    .form-group input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    
+    /* 調閱舊資料按鈕區 */
+    .search-bar { display: flex; gap: 10px; margin-bottom: 20px; background: #eff6ff; padding: 12px; border-radius: 8px; border: 1px solid #bfdbfe; }
+    .search-bar input { flex: 1; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; }
+
+    /* 條款卡片 */
+    .section-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 15px; background: #ffffff; }
+    .section-title { font-size: 16px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 10px; border-left: 4px solid #2563eb; padding-left: 8px; }
+    .section-card ol { margin: 0; padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.6; }
+    .checkbox-label { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; font-weight: bold; color: #166534; cursor: pointer; }
+
+    /* 簽名板區 */
+    .signature-area { border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px; background: #fafafa; margin-bottom: 20px; }
+    .canvas-container { border: 2px dashed #94a3b8; background: #fff; border-radius: 6px; margin: 10px 0; touch-action: none; }
+    
+    /* 歷史補簽紀錄區 */
+    .history-list { font-size: 13px; color: #475569; margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+    .history-item { background: #f1f5f9; padding: 8px; border-radius: 4px; margin-bottom: 5px; display: flex; justify-content: space-between; }
+
+    /* 按鈕樣式 */
+    .btn { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+    .btn:hover { background: #1d4ed8; }
+    .btn-secondary { background: #64748b; }
+    .btn-secondary:hover { background: #475569; }
+    .btn-outline { background: transparent; color: #475569; border: 1px solid #cbd5e1; }
+    .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="container" id="pdf-content">
+  
+  <div class="header">
+    <h1>廠商入廠施工安全告知與簽署紀錄</h1>
+    <p>包含：行程教育 ‧ 危害因素告知 ‧ 動火作業須知</p>
+  </div>
+
+  <!-- 調閱歷史資料列 -->
+  <div class="search-bar" data-html2pdf-ignore="true">
+    <input type="text" id="search-id" placeholder="輸入單號或手機號碼調閱歷史檔案...">
+    <button class="btn btn-secondary" onclick="loadData()">調閱舊單 / 準備補簽</button>
+  </div>
+
+  <!-- 基本資料填寫 -->
+  <div class="form-grid">
+    <div class="form-group">
+      <label>廠商名稱</label>
+      <input type="text" id="vendor-name" placeholder="請輸入公司名稱">
+    </div>
+    <div class="form-group">
+      <label>入廠單號</label>
+      <input type="text" id="form-id" readonly style="background:#f1f5f9;">
+    </div>
+    <div class="form-group">
+      <label>施工負責人 / 聯絡電話</label>
+      <input type="text" id="vendor-contact" placeholder="姓名與電話">
+    </div>
+    <div class="form-group">
+      <label>施工日期</label>
+      <input type="date" id="work-date">
+    </div>
+  </div>
+
+  <!-- 須知一：行程教育 -->
+  <div class="section-card">
+    <div class="section-title">第一部分：廠商行程與安全教育須知</div>
+    <ol>
+      <li>所有入廠人員必須全程配戴臨時工作證與指定安全防護具（安全帽、安全鞋）。</li>
+      <li>嚴禁攜帶違禁品、酒類或未申報之危險化學品進入廠區。</li>
+      <li>施工人員僅限於指定作業區域活動，嚴禁擅自進入未授權之管制區。</li>
+    </ol>
+    <label class="checkbox-label">
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> 我已完全理解並同意遵照上述「行程教育須知」
+    </label>
+  </div>
+
+  <!-- 須知二：危害因素告知 -->
+  <div class="section-card">
+    <div class="section-title">第二部分：施工區域危害因素告知</div>
+    <ol>
+      <li>局限空間危害：未經氣體檢測合格前，嚴禁人員進入局限空間。</li>
+      <li>墜落危害：高度達 2 公尺以上作業，必須全程勾掛安全帶並設置合格鷹架。</li>
+      <li>感電危害：臨時用電設施須裝設漏電斷路器，嚴禁使用破損電線。</li>
+    </ol>
+    <label class="checkbox-label">
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> 我已完全理解並知悉「施工危害因素告知」內容
+    </label>
+  </div>
+
+  <!-- 須知三：動火作業須知 -->
+  <div class="section-card">
+    <div class="section-title">第三部分：動火作業安全須知</div>
+    <ol>
+      <li>動火作業（焊接、切割、打磨等）周圍 10 公尺內必須清理易燃物。</li>
+      <li>動火現場必須備妥合格之滅火器，並指派專責監火人全程監護。</li>
+      <li>作業結束後，監火人與負責人須於現場觀察至少 30 分鐘，確認無殘火。</li>
+    </ol>
+    <label class="checkbox-label">
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> 我已完全理解並承諾落實「動火作業須知」
+    </label>
+  </div>
+
+  <!-- 歷史簽署紀錄區（補簽時會顯示） -->
+  <div class="section-card" id="history-section" style="display:none;">
+    <div class="section-title">歷史電子簽署紀錄 (已存檔紀錄)</div>
+    <div id="history-list-box" class="history-list"></div>
+  </div>
+
+  <!-- 當前電子簽名區 -->
+  <div class="signature-area">
+    <div class="section-title" id="sig-title">電子簽名區 (請於下方區域手寫簽名)</div>
+    <div class="canvas-container">
+      <canvas id="sig-canvas" width="700" height="180" style="width: 100%; height: 180px;"></canvas>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;" data-html2pdf-ignore="true">
+      <button class="btn btn-outline" onclick="clearCanvas()">清除重簽</button>
+      <input type="text" id="sig-note" placeholder="簽署備註 (例如: 施工負責人 / 追加高空審核)" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 60%;">
+    </div>
+  </div>
+
+  <!-- 操作按鈕區 -->
+  <div class="actions" data-html2pdf-ignore="true">
+    <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並下載 PDF 自動歸檔</button>
+  </div>
+
+</div>
+
+<script>
+  let signaturePad;
+  let historyLogs = [];
+
+  window.onload = function() {
+    // 初始化簽名板
+    const canvas = document.getElementById('sig-canvas');
+    signaturePad = new SignaturePad(canvas);
+    
+    // 初始化單號與日期
+    document.getElementById('form-id').value = 'CTR-' + Date.now().toString().slice(-6);
+    document.getElementById('work-date').valueAsDate = new Date();
+  };
+
+  function validateForm() {
+    const checks = document.querySelectorAll('.agree-check');
+    const allChecked = Array.from(checks).every(c => c.checked);
+    document.getElementById('save-btn').disabled = !allChecked;
+  }
+
+  function clearCanvas() {
+    signaturePad.clear();
+  }
+
+  // 1. 儲存資料到瀏覽器 (LocalStorage) 並下載 PDF 檔
+  function saveDataAndExportPDF() {
+    if (signaturePad.isEmpty()) {
+      alert("請完成電子簽名後再存檔！");
+      return;
+    }
+
+    const formId = document.getElementById('form-id').value;
+    const vendorName = document.getElementById('vendor-name').value || "未填寫廠商";
+    const sigImage = signaturePad.toDataURL();
+    const sigNote = document.getElementById('sig-note').value || "首次簽署";
+
+    // 新增簽名歷史紀錄
+    historyLogs.push({
+      time: new Date().toLocaleString('zh-TW'),
+      note: sigNote,
+      image: sigImage
+    });
+
+    // 準備保存的完整物件
+    const formData = {
+      formId: formId,
+      vendorName: vendorName,
+      vendorContact: document.getElementById('vendor-contact').value,
+      workDate: document.getElementById('work-date').value,
+      historyLogs: historyLogs
+    };
+
+    // 存入瀏覽器資料庫 (可使用單號調閱)
+    localStorage.setItem('SAFETY_FORM_' + formId, JSON.stringify(formData));
+
+    alert("資料已成功儲存！系統正在為您導出 PDF 檔案...");
+
+    // 2. 自動產生並下載 PDF
+    const element = document.getElementById('pdf-content');
+    const opt = {
+      margin:       10,
+      filename:     `施工安全告知書_${vendorName}_${formId}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      // 導出後重新載入歷史顯示
+      renderHistoryUI();
+      signaturePad.clear();
+      document.getElementById('sig-note').value = '';
+    });
+  }
+
+  // 3. 調閱舊資料與補簽功能
+  function loadData() {
+    const searchId = document.getElementById('search-id').value.trim();
+    if (!searchId) {
+      alert("請輸入要查詢的單號！");
+      return;
+    }
+
+    const savedData = localStorage.getItem('SAFETY_FORM_' + searchId);
+    if (!savedData) {
+      alert("找不到該單號的歷史紀錄！");
+      return;
+    }
+
+    const data = JSON.parse(savedData);
+    document.getElementById('form-id').value = data.formId;
+    document.getElementById('vendor-name').value = data.vendorName;
+    document.getElementById('vendor-contact').value = data.vendorContact;
+    document.getElementById('work-date').value = data.workDate;
+    historyLogs = data.historyLogs || [];
+
+    // 自動勾選所有條款
+    document.querySelectorAll('.agree-check').forEach(cb => cb.checked = true);
+    validateForm();
+
+    // 渲染歷史簽名
+    renderHistoryUI();
+    document.getElementById('sig-title').innerText = "二次追加 / 補簽區域";
+    alert(`成功載入單號：${searchId}！您可以於下方補簽後重新存檔輸出 PDF。`);
+  }
+
+  function renderHistoryUI() {
+    if (historyLogs.length === 0) return;
+    
+    const historySection = document.getElementById('history-section');
+    const historyBox = document.getElementById('history-list-box');
+    historySection.style.display = 'block';
+    historyBox.innerHTML = '';
+
+    historyLogs.forEach((log, index) => {
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML = `
+        <div>
+          <strong>紀錄 #${index + 1} (${log.note})</strong><br>
+          <small>時間：${log.time}</small>
+        </div>
+        <img src="${log.image}" style="height: 40px; border: 1px solid #ccc; background: #fff;">
+      `;
+      historyBox.appendChild(item);
+    });
+  }
+</script>
+
+</body>
+</html>
