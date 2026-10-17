@@ -5,141 +5,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>外包廠商入廠施工安全告知與電子簽署系統</title>
   
-  <!-- SignaturePad & html2pdf -->
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
-    * { box-sizing: border-box; font-family: "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif; }
-    body { background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
+    * { box-sizing: border-box; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; }
+    body { background-color: #f1f5f9; margin: 0; padding: 15px; color: #1e293b; }
     
-    .container { 
-      max-width: 820px; 
-      margin: 0 auto; 
-      background: #ffffff; 
-      padding: 30px; 
-      border-radius: 12px; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+    #pdf-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     
-    .header { text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 12px; margin-bottom: 20px; }
-    .header h1 { margin: 0; color: #1e3a8a; font-size: 22px; font-weight: bold; }
-    .header p { margin: 5px 0 0; color: #64748b; font-size: 13px; }
+    .header { text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 15px; }
+    .header h1 { margin: 0; color: #1e3a8a; font-size: 20px; font-weight: bold; }
+    .header p { margin: 4px 0 0; color: #64748b; font-size: 12px; }
 
-    /* 基本資料表格 */
-    .form-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 12px; 
-      margin-bottom: 20px; 
-      background: #f8fafc; 
-      padding: 15px; 
-      border-radius: 8px; 
-      border: 1px solid #e2e8f0;
+    /* 基本資料區 */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
     }
-    .form-group { display: flex; flex-direction: column; }
-    .form-group label { font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #334155; }
-    .form-group input { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; background: #fff; }
-    
-    /* 搜尋調閱 */
-    .search-bar { display: flex; gap: 10px; margin-bottom: 20px; background: #eff6ff; padding: 12px; border-radius: 8px; border: 1px solid #bfdbfe; }
-    .search-bar input { flex: 1; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 6px; }
+    .info-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+    .info-table td.label {
+      background: #f1f5f9;
+      font-weight: bold;
+      color: #334155;
+      width: 20%;
+    }
+    .info-table td input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 13px;
+      background: transparent;
+    }
 
-    /* 須知條款區塊 */
+    .search-bar { 
+      display: flex; 
+      gap: 10px; 
+      margin-bottom: 15px; 
+      background: #eff6ff; 
+      padding: 10px; 
+      border-radius: 6px; 
+      border: 1px solid #bfdbfe; 
+    }
+    .search-bar input { flex: 1; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; }
+
+    /* 須知區塊 */
     .section-card { 
       border: 1px solid #e2e8f0; 
-      border-radius: 8px; 
-      padding: 15px; 
-      margin-bottom: 15px; 
+      border-radius: 6px; 
+      padding: 12px 15px; 
+      margin-bottom: 12px; 
       background: #ffffff;
-      page-break-inside: avoid;
+      page-break-inside: avoid !important;
     }
-    .section-title { font-size: 15px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 8px; border-left: 4px solid #2563eb; padding-left: 8px; }
-    .section-card ol { margin: 0; padding-left: 20px; font-size: 13px; color: #475569; line-height: 1.6; }
-    .checkbox-label { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; font-weight: bold; color: #166534; cursor: pointer; }
+    .section-title { font-size: 14px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 6px; border-left: 4px solid #2563eb; padding-left: 6px; }
+    .section-card ol { margin: 0; padding-left: 20px; font-size: 12.5px; color: #475569; line-height: 1.5; }
+    .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12.5px; font-weight: bold; color: #166534; cursor: pointer; }
 
-    /* 簽名板區塊 (多簽名卡片) */
-    .sig-group-title { font-size: 16px; font-weight: bold; color: #0f172a; margin-top: 25px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    /* 多人簽名區 */
+    .sig-group-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-top: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     
     .sig-card { 
       border: 1px solid #cbd5e1; 
-      border-radius: 8px; 
-      padding: 15px; 
+      border-radius: 6px; 
+      padding: 10px 12px; 
       background: #fafafa; 
-      margin-bottom: 15px; 
-      position: relative;
-      page-break-inside: avoid;
+      margin-bottom: 12px; 
+      page-break-inside: avoid !important;
     }
-    .sig-card-header { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-    .sig-card-header input { padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; }
-    .sig-card-header select { padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; background: #fff; }
+    .sig-card-header { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .sig-card-header input, .sig-card-header select { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; background: #fff; }
     
-    .canvas-container { border: 2px dashed #94a3b8; background: #fff; border-radius: 6px; margin: 8px 0; touch-action: none; position: relative; }
-    .canvas-container canvas { width: 100%; height: 140px; display: block; }
-    
-    .sig-img-preview { display: none; max-height: 120px; max-width: 100%; margin-top: 5px; }
+    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 5px 0; }
+    .canvas-container canvas { width: 100%; height: 110px; display: block; }
+    .sig-img-preview { display: none; max-height: 90px; margin: 4px 0; }
 
-    /* 歷史紀錄區 */
-    .history-list { font-size: 13px; color: #475569; margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
-    .history-item { background: #f1f5f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    /* 歷史紀錄 */
+    .history-list { font-size: 12px; color: #475569; margin-top: 8px; }
+    .history-item { background: #f1f5f9; padding: 6px 10px; border-radius: 4px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 
     /* 按鈕樣式 */
-    .btn { background: #2563eb; color: white; border: none; padding: 9px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13.5px; }
-    .btn:hover { background: #1d4ed8; }
+    .btn { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
     .btn-add { background: #059669; }
-    .btn-add:hover { background: #047857; }
-    .btn-danger { background: #dc2626; color: white; padding: 4px 10px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; }
+    .btn-danger { background: #dc2626; color: white; padding: 3px 8px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
     .btn-secondary { background: #64748b; }
-    .btn-outline { background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 5px 12px; font-size: 12px; }
+    .btn-outline { background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 4px 8px; font-size: 11px; }
     .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; }
+    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
-    @media print {
-      body { background: white; padding: 0; }
-      .container { box-shadow: none; padding: 0; max-width: 100%; }
-      [data-html2pdf-ignore] { display: none !important; }
-      .canvas-container { border: 1px solid #ccc; }
-      .section-card, .sig-card { page-break-inside: avoid; }
-    }
+    /* PDF 匯出模式樣式 */
+    .no-pdf { display: block; }
+    .pdf-mode .no-pdf { display: none !important; }
+    .pdf-mode #pdf-wrapper { box-shadow: none; padding: 0; margin: 0; width: 100%; }
   </style>
 </head>
 <body>
 
-<div class="container" id="pdf-content">
+<div id="pdf-wrapper">
   
   <div class="header">
     <h1>外包廠商入廠施工安全告知與簽署紀錄表</h1>
     <p>包含：行程教育 ‧ 危害因素告知 ‧ 動火作業須知</p>
   </div>
 
-  <!-- 調閱歷史資料列 -->
-  <div class="search-bar" data-html2pdf-ignore="true">
-    <input type="text" id="search-id" placeholder="輸入單號 (例如: CTR-xxxxxx) 調閱檔案與追加簽名...">
+  <!-- 調閱搜尋列 -->
+  <div class="search-bar no-pdf">
+    <input type="text" id="search-id" placeholder="輸入單號 (例如: CTR-873531) 調閱舊單與補簽...">
     <button class="btn btn-secondary" onclick="loadData()">調閱舊單 / 補簽</button>
   </div>
 
-  <!-- 基本資料填寫 -->
-  <div class="form-grid">
-    <div class="form-group">
-      <label>承攬廠商名稱</label>
-      <input type="text" id="vendor-name" placeholder="例如：東昇工程實業有限公司">
-    </div>
-    <div class="form-group">
-      <label>入廠施工單號</label>
-      <input type="text" id="form-id" readonly style="background:#f1f5f9; font-weight:bold;">
-    </div>
-    <div class="form-group">
-      <label>廠商聯絡人 / 電話</label>
-      <input type="text" id="vendor-contact" placeholder="例如：陳大明 0912-345678">
-    </div>
-    <div class="form-group">
-      <label>施工日期</label>
-      <input type="date" id="work-date">
-    </div>
-  </div>
+  <!-- 基本資料表單 -->
+  <table class="info-table">
+    <tr>
+      <td class="label">承攬廠商名稱</td>
+      <td><input type="text" id="vendor-name" placeholder="請輸入廠商名稱"></td>
+      <td class="label">入廠施工單號</td>
+      <td><input type="text" id="form-id" readonly style="font-weight:bold;"></td>
+    </tr>
+    <tr>
+      <td class="label">廠商聯絡人/電話</td>
+      <td><input type="text" id="vendor-contact" placeholder="姓名與電話"></td>
+      <td class="label">施工日期</td>
+      <td><input type="date" id="work-date"></td>
+    </tr>
+  </table>
 
-  <!-- 須知一：行程教育 -->
+  <!-- 須知一 -->
   <div class="section-card">
     <div class="section-title">第一部分：廠商行程與安全教育須知</div>
     <ol>
@@ -148,11 +152,11 @@
       <li>施工人員僅限於指定作業區域活動，嚴禁擅自進入未授權之管制區。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" onchange="validateForm()"> 我已完全理解並同意遵照上述「行程教育須知」
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並同意遵照上述「行程教育須知」
     </label>
   </div>
 
-  <!-- 須知二：危害因素告知 -->
+  <!-- 須知二 -->
   <div class="section-card">
     <div class="section-title">第二部分：施工區域危害因素告知</div>
     <ol>
@@ -161,11 +165,11 @@
       <li>感電危害：臨時用電設施須裝設漏電斷路器，嚴禁使用破損電線工具。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" onchange="validateForm()"> 我已完全理解並知悉「施工危害因素告知」內容
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並知悉「施工危害因素告知」內容
     </label>
   </div>
 
-  <!-- 須知三：動火作業須知 -->
+  <!-- 須知三 -->
   <div class="section-card">
     <div class="section-title">第三部分：動火作業安全須知</div>
     <ol>
@@ -174,38 +178,41 @@
       <li>作業結束後，監火人與負責人須於現場觀察至少 30 分鐘，確認無殘火。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" onchange="validateForm()"> 我已完全理解並承諾落實「動火作業須知」
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並承諾落實「動火作業須知」
     </label>
   </div>
 
-  <!-- 歷史簽署紀錄區 -->
+  <!-- 歷史簽署紀錄 -->
   <div class="section-card" id="history-section" style="display:none;">
     <div class="section-title">歷史電子簽署紀錄 (已存檔內容)</div>
     <div id="history-list-box" class="history-list"></div>
   </div>
 
-  <!-- 多人電子簽名區 -->
+  <!-- 多人簽名區 -->
   <div class="sig-group-title">
     <span>電子簽名區（支援多人同時簽名）</span>
-    <button class="btn btn-add" data-html2pdf-ignore="true" onclick="addSignatureCard()">+ 新增簽名人員</button>
+    <button class="btn btn-add no-pdf" onclick="addSignatureCard()">+ 新增簽名人員</button>
   </div>
 
   <div id="sig-cards-container"></div>
 
-  <!-- 操作按鈕區 -->
-  <div class="actions" data-html2pdf-ignore="true">
-    <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並輸出高清 PDF 歸檔</button>
+  <!-- 按鈕 -->
+  <div class="actions no-pdf">
+    <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並自動歸檔至雲端</button>
   </div>
 
 </div>
 
 <script>
+  // https://script.google.com/macros/s/AKfycbypkT_za1ciwqxwz4NsglckoZaPMShMGHGB8GpX8xFw8oT1NNhpIY2mUVXum80gTPLRlw/exec
+  const GOOGLE_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
+
   let sigPadInstances = [];
   let historyLogs = [];
   let cardCounter = 0;
 
   window.onload = function() {
-    document.getElementById('form-id').value = 'CTR-' + Date.now().toString().slice(-6);
+    document.getElementById('form-id').value = 'CTR-' + Math.floor(100000 + Math.random() * 900000);
     document.getElementById('work-date').valueAsDate = new Date();
     addSignatureCard('施工負責人');
   };
@@ -227,7 +234,7 @@
             <option value="追加/二次補簽" ${defaultRole==='追加/二次補簽'?'selected':''}>追加 / 二次補簽</option>
           </select>
           <input type="text" id="name-${cardCounter}" placeholder="簽署人姓名 (例如: 王大明)" style="flex:1;">
-          ${cardCounter > 1 ? `<button class="btn-danger" data-html2pdf-ignore="true" onclick="removeSignatureCard('${cardId}',${cardCounter})">刪除此人</button>` : ''}
+          ${cardCounter > 1 ? `<button class="btn-danger no-pdf" onclick="removeSignatureCard('${cardId}',${cardCounter})">刪除</button>` : ''}
         </div>
         
         <div class="canvas-container">
@@ -235,9 +242,9 @@
           <img id="${imgId}" class="sig-img-preview" alt="簽名檔">
         </div>
         
-        <div style="display: flex; justify-content: space-between; align-items: center;" data-html2pdf-ignore="true">
+        <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
           <button class="btn btn-outline" onclick="clearSingleCanvas(${cardCounter})">清除重簽</button>
-          <span style="font-size: 12px; color: #94a3b8;">請使用手指或觸控筆在框內手寫簽名</span>
+          <span style="font-size: 11px; color: #94a3b8;">請使用手指或筆在上方框內簽名</span>
         </div>
       </div>
     `;
@@ -246,16 +253,11 @@
 
     setTimeout(() => {
       const canvas = document.getElementById(canvasId);
-      canvas.width = canvas.parentElement.clientWidth || 700;
-      canvas.height = 140;
+      canvas.width = canvas.parentElement.clientWidth || 650;
+      canvas.height = 110;
 
-      const pad = new SignaturePad(canvas, {
-        minWidth: 1.5,
-        maxWidth: 3.5,
-        penColor: "#0f172a"
-      });
-
-      sigPadInstances.push({ id: cardCounter, pad: pad, canvas: canvas, cardId: cardId });
+      const pad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      sigPadInstances.push({ id: cardCounter, pad: pad, canvas: canvas });
     }, 50);
   }
 
@@ -289,6 +291,7 @@
         const imgEle = document.getElementById(`img-${item.id}`);
         imgEle.src = dataUrl;
         imgEle.style.display = 'block';
+        item.canvas.parentElement.style.border = 'none';
         item.canvas.style.display = 'none';
 
         newSignatures.push({ role: role, name: name, time: new Date().toLocaleString('zh-TW'), image: dataUrl });
@@ -296,7 +299,7 @@
     });
 
     if (validSignatures === 0 && historyLogs.length === 0) {
-      alert("請至少讓一位人員完成簽名！");
+      alert("請至少在簽名板上完成簽名！");
       return;
     }
 
@@ -305,6 +308,7 @@
 
     newSignatures.forEach(s => historyLogs.push(s));
 
+    // 本機暫存
     const formData = {
       formId: formId,
       vendorName: vendorName,
@@ -314,23 +318,57 @@
     };
     localStorage.setItem('SAFETY_FORM_' + formId, JSON.stringify(formData));
 
-    const element = document.getElementById('pdf-content');
+    // 切換為 PDF 匯出模式
+    document.body.classList.add('pdf-mode');
+
+    const element = document.getElementById('pdf-wrapper');
     const opt = {
-      margin:       [10, 10, 10, 10],
+      margin:       [5, 5, 5, 5],
       filename:     `施工安全告知與簽署書_${vendorName}_${formId}.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, logging: false },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+      html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    html2pdf().set(opt).from(element).save().then(() => {
-      alert("PDF 存檔下載完成！已自動歸檔。");
+    // 1. 本地下載 PDF
+    html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
+      
+      // 復原畫面
+      document.body.classList.remove('pdf-mode');
       sigPadInstances.forEach(item => {
         item.canvas.style.display = 'block';
+        item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
         document.getElementById(`img-${item.id}`).style.display = 'none';
       });
       renderHistoryUI();
+
+      // 2. 如果已設定 Google Apps Script URL，上傳到 Google Drive 雲端硬碟
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            formId: formId,
+            vendorName: vendorName,
+            vendorContact: document.getElementById('vendor-contact').value,
+            workDate: document.getElementById('work-date').value,
+            pdfBase64: pdfBase64
+          })
+        })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 'success') {
+            alert("成功！檔案已自動歸檔上傳至 Google Drive 雲端硬碟！");
+          } else {
+            alert("雲端歸檔失敗：" + res.message);
+          }
+        })
+        .catch(err => {
+          alert("上傳雲端時發生錯誤，請檢查 Google Apps Script 網址設定。");
+        });
+      } else {
+        alert("PDF 下載成功！(提示：尚未設定 Google Apps Script 網址，因此未自動備份至 Google Drive)");
+      }
+
     });
   }
 
@@ -362,7 +400,7 @@
     addSignatureCard('追加/二次補簽');
 
     renderHistoryUI();
-    alert(`已載入單號 [${searchId}]！上方已顯示歷史簽名，您可於下方進行補簽。`);
+    alert(`已成功調閱單號 [${searchId}]！`);
   }
 
   function renderHistoryUI() {
@@ -381,7 +419,7 @@
           <strong>[${log.role}] ${log.name}</strong><br>
           <small style="color:#64748b;">簽署時間：${log.time}</small>
         </div>
-        <img src="${log.image}" style="height: 45px; border: 1px solid #cbd5e1; background: #fff; padding: 2px; border-radius: 4px;">
+        <img src="${log.image}" style="height: 40px; border: 1px solid #cbd5e1; background: #fff; padding: 2px; border-radius: 4px;">
       `;
       historyBox.appendChild(item);
     });
