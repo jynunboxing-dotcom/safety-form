@@ -52,7 +52,7 @@
     .sig-card-header { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
     .sig-card-header input, .sig-card-header select { padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background: #fff; }
     
-    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; position: relative; }
+    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; position: relative; min-height: 90px; }
     .canvas-container canvas { width: 100%; height: 90px; display: block; touch-action: none; }
     .sig-img-preview { display: none; max-height: 70px; margin: 2px 0; }
 
@@ -121,19 +121,20 @@
     <div class="section-title">基本遵守事項</div>
     <ol class="rule-list">
       <li>進入工區配戴安全帽並佩掛識別證，非施工人員嚴禁進入工區。</li>
-      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施（鷹架、防墜網、中欄杆）。</li>
+      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施（鷹架、長條型防墜網、中欄杆）。</li>
       <li>工區內臨時用電掛名牌，電線一律高架，電源限接二次側，使用標準插頭及電纜線並裝設高速型漏電斷路器。</li>
-      <li>各工種施工時，須有安衛主管或專人於旁管理，避免不安全行為發生。電焊作業需有自動電擊防止裝置。</li>
-      <li>承商應加強所屬施工人員及區域之危害告知，確實巡查工區安衛並回報缺失，確保生命財產安全。</li>
+      <li>工區內安衛措施嚴禁拆除，並與工班宣導隨手做安衛觀念。</li>
+      <li>各工種施工時，須有安衛主管或專人於旁管理。電焊作業需有防止電擊裝置。</li>
+      <li>承商確實巡查工區安衛，並將缺失確實回報，確保生命財產安全。</li>
     </ol>
   </div>
 
   <div class="section-card">
-    <div class="section-title">作業項目、危害因素與防止對策總表 (重點摘要)</div>
+    <div class="section-title">作業項目、危害因素與防止對策總表 (14項重點分類)</div>
     <table class="hazard-table">
       <thead>
         <tr>
-          <th style="width: 22%;">作業項目</th>
+          <th style="width: 20%;">作業項目</th>
           <th style="width: 22%;">可能危害因素</th>
           <th>危害防止對策 (摘要)</th>
         </tr>
@@ -142,37 +143,67 @@
         <tr>
           <td>一、拆除作業</td>
           <td>崩塌、物料掉落、粉塵</td>
-          <td>設置圍籬防塵網，不穩定結構先支撐固定，廢料堆置≤2米，嚴禁上下交叉作業。</td>
+          <td>設圍籬及隔離裝置；隨時灑水降塵；不穩定結構固定支撐；廢料堆置高≤2米；嚴禁上下交叉作業。</td>
         </tr>
         <tr>
-          <td>二、車輛與大型機具進場</td>
+          <td>二、車輛/大型機具作業</td>
           <td>交通意外、物料掉落、感電</td>
-          <td>設交通引導員；起重機及操作手需合格證照；總受電盤接地，分電盤設漏電斷路器。</td>
+          <td>設交通指揮員；起重機及操作手、吊掛手需持合格證照；吊物下方嚴禁人進入；電盤裝高速型漏電斷路器。</td>
         </tr>
         <tr>
           <td>三、高空吊裝、組立</td>
           <td>墜落、翻倒、觸電</td>
-          <td>安裝安全網、使用三點式安全帶及安全母索；防滑舌片不可解開；吊物下方嚴禁站人。</td>
+          <td>安裝防墜網；強制佩戴三點式安全帶及掛安全母索；防滑舌片正常；構件安裝穩固方可鬆放。</td>
         </tr>
         <tr>
-          <td>四、高空作業 (≥2M)</td>
+          <td>四、裝卸物品</td>
+          <td>崩塌、物料掉落、割傷</td>
+          <td>高處作業設置擋板捆綁；嚴禁下拋物品；禁止由吊舉物下方通過；易碎品搬運小心謹慎。</td>
+        </tr>
+        <tr>
+          <td>五、高空作業 (≥2M)</td>
           <td>墜(滾)落、物料掉落、感電</td>
-          <td>設置護欄護蓋或安全網；嚴禁酒後或身體不適作業；嚴禁於施工架上使用合梯。</td>
+          <td>開口設護欄或護蓋；嚴禁於施工架上使用合梯；嚴禁酒後或身體不適者作業；高差1.5米以上設安全上下設備。</td>
         </tr>
         <tr>
-          <td>五、焊接、動火作業</td>
+          <td>六、焊接、動火作業</td>
           <td>感電、爆炸、中毒、火災</td>
-          <td>電焊機設自動電擊防止裝置；配戴絕緣防護具；2米內備滅火器並鋪設防火毯；鋼瓶固定。</td>
+          <td>交流電焊機裝自動電擊防止裝置；佩帶絕緣具；2米內備滅火器並鋪防火毯；鋼瓶垂直固定分開儲存。</td>
         </tr>
         <tr>
-          <td>六、局限空間作業</td>
+          <td>七、局限空間作業</td>
           <td>缺氧、中毒、可燃氣體</td>
-          <td>進場前實施氣體測定；設置強制機械通風；配戴呼吸式防護具；每2小時記錄一次。</td>
+          <td>作業前檢查有害/可燃氣體；實施機械強制通風；佩帶呼吸防護具與防護索；每2小時記錄氣體濃度。</td>
+        </tr>
+        <tr>
+          <td>八、環境清潔消毒</td>
+          <td>有害物接觸</td>
+          <td>穿全套個人防護裝備(防毒面具、長統膠鞋)；完畢立即沐浴更衣；回收藥瓶。</td>
+        </tr>
+        <tr>
+          <td>九、裝修塗裝作業</td>
+          <td>墜落、中毒、缺氧、感電</td>
+          <td>移動式施工架符指引；電動工具接接地線；嚴禁施工架上使用合梯；保持通風防爆。</td>
+        </tr>
+        <tr>
+          <td>十、跌倒與工作環境</td>
+          <td>突出物、落差、滑溜</td>
+          <td>突出物移走或標示防範；落差處設防護；建材排放整齊不占用通道；地面保持平坦。</td>
+        </tr>
+        <tr>
+          <td>十一、電氣作業</td>
+          <td>感電、觸電</td>
+          <td>高壓設備由專業人員引導；電路裝置漏電斷路器；電線架高加掛標示。</td>
+        </tr>
+        <tr>
+          <td>十二、物體飛落與機械</td>
+          <td>飛落傷人、夾捲切擦傷</td>
+          <td>搬運捆牢並派人指揮；除草機操作穿護衣帽；圓鋸機研磨機嚴禁拆護罩；傳動件設護欄。</td>
         </tr>
       </tbody>
     </table>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" checked> [✓] 本人（承攬廠商代表）已詳閱危害因素告知單，絕對同意並遵照上述事項辦理。
+      <input type="checkbox" class="agree-check" checked> [✓] 本人（承攬廠商代表）已詳閱工作場所危害因素告知單重點內容，絕對同意並遵守危害防止對策。
     </label>
   </div>
 
@@ -181,23 +212,35 @@
   <div class="page-break"></div>
 
   <div class="header">
-    <h1>一般作業勞工勤前教育記錄與危害告知</h1>
-    <p>工具箱會議 (Toolbox Meeting) 暨施工人員安全切結</p>
+    <h1>一般作業勞工勤前教育記錄 (工具箱會議)</h1>
+    <p>勞工安全切結暨危害告知宣導記錄</p>
   </div>
 
   <div class="section-card">
-    <div class="section-title">遵守內容簡述</div>
+    <div class="section-title">遵守內容簡述 (19項宣導重點)</div>
     <ol class="rule-list">
-      <li>進入工區配戴安全帽並佩掛識別證，非施工人員嚴禁進入工區。</li>
-      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施。</li>
-      <li><strong>上班前、工作中嚴禁飲用含有酒精性飲料（包括啤酒、維士比、保力達等）。</strong></li>
-      <li>動火作業須指派專人監督，備妥滅火器、防火毯，完工後自主檢查無火花。</li>
-      <li>使用電器設備應裝設漏電斷路器、合格電纜線，嚴禁裸線插接，電線應架高。</li>
-      <li>施工現場嚴禁吸菸（吸菸須至指定地點），<strong>嚴禁吵架、打架、賭博等違法行為。</strong></li>
-      <li>合梯使用規定：堅固構造、無損傷、梯寬≥30cm、梯腳角度在75°以內且繫材扣牢。</li>
+      <li>進入工區戴安全帽並佩掛識別證，非施工人員嚴禁進入工區。</li>
+      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施（鷹架、長條型防墜網、中欄杆）。</li>
+      <li><strong>上班前、工作中禁止飲用含有酒精性飲料（包括啤酒、維士比、保力達等）。</strong></li>
+      <li>動火作業（例：氧氣乙炔、切割機、電焊機等）施作時須指派專人監督；設置有效滅火器、移開易燃物、鋪設防火毯；完工後自主檢查確認無火花並知會安衛人員複檢。</li>
+      <li>使用電器設備應裝設漏電斷路器、合格電纜線、插座，電線應架高，嚴禁裸線插接。</li>
+      <li>使用移動式施工架須設置上下設備及護欄並符合法規規定。</li>
+      <li>從事有害作業勞工須使用合格個人防護用具（口罩、手套、護目鏡等）。</li>
+      <li>從事吊掛作業須具合格證照之操作與指揮人員，嚴禁人員進入吊舉物下方，設置警示帶。</li>
+      <li>勞工於高差 1.5 公尺以上場所作業應使用安全上下設備。</li>
+      <li>氧氣、乙炔鋼瓶應綁紮固定分開儲存，儲存處禁止煙火。使用中鋼瓶應裝設防迴火逆止閥及滅火器。</li>
+      <li>未能設置護欄之作業面應先拉設安全母索，確認安全無虞始可作業。</li>
+      <li>自然換氣不良場所應採取通風措施並測定作業環境，缺氧作業主管需在場監督。</li>
+      <li>作業時不得任意破壞現場安全防護設施或使其失效。</li>
+      <li>合梯使用規定：①具堅固構造 ②無顯著損傷腐蝕 ③寬度≥30公分 ④梯腳角度75°以內且有繫材扣牢 ⑤有安全梯面。</li>
+      <li>施工現場嚴禁吸菸，吸菸請至指定場所。</li>
+      <li><strong>嚴禁吵架、打架、恐嚇、賭博等違法事件，違者立即驅離並嚴懲相關廠商。</strong></li>
+      <li>作業時作業主管或安衛人員應在場監督。</li>
+      <li>施工作業時應先劃定施工範圍區域，防止閒雜人員靠近。</li>
+      <li>勞工作業前實施勤前教育，宣導工作環境危害因素，違反者依規定辦理。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" checked> [✓] 乙方施工人員同意遵守以上危害告知與勤前教育條款，絕無異議。
+      <input type="checkbox" class="agree-check" checked> [✓] 乙方施工人員同意遵守上述勤前教育與危害告知內容，絕無異議。
     </label>
   </div>
 
@@ -206,7 +249,7 @@
     <div class="section-title" style="color:#166534;">🔥 本次施工是否有「動火作業」？（如：焊接、切割、打磨等）</div>
     <div style="display:flex; gap:20px; font-size:12.5px; font-weight:bold; margin-top:5px;">
       <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="no" checked onchange="toggleHotWorkSection()"> 否，無動火作業 (無需甲方簽名)</label>
-      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="yes" onchange="toggleHotWorkSection()"> 是，有動火作業 (開啟第 3 頁用火許可與簽名)</label>
+      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="yes" onchange="toggleHotWorkSection()"> 是，有動火作業 (開啟第 3 頁用火許可與動火簽名)</label>
     </div>
   </div>
 
@@ -225,23 +268,23 @@
 
     <div class="header">
       <h1>公司內部用火許可證 (Hot Work Permit)</h1>
-      <p>動火作業強制安全規則與檢核表 (有效期 24 小時)</p>
+      <p>迪卡儂及總體工程代理負責人強制安全規則 (有效期 24H)</p>
     </div>
 
     <table class="info-table">
       <tr>
-        <td class="label">動火目的</td>
+        <td class="label">工程名稱/目的</td>
         <td colspan="3"><input type="text" id="hw-purpose" placeholder="例如：金屬管道焊接與切割打磨"></td>
       </tr>
       <tr>
-        <td class="label">具體位置</td>
+        <td class="label">具體施工位置</td>
         <td><input type="text" id="hw-location" placeholder="例如：1F 後方機房區域"></td>
         <td class="label">已知風險標明</td>
-        <td><input type="text" id="hw-risk" placeholder="例如：周邊有隱蔽電線、高空易燃物"></td>
+        <td><input type="text" id="hw-risk" placeholder="特殊貨物、隱蔽電線、瓦斯鋼瓶等..."></td>
       </tr>
       <tr>
         <td class="label">現場防護措施</td>
-        <td colspan="3"><input type="text" id="hw-safety-measure" placeholder="已鋪設防火毯、清空2米內易燃物、配帶防護面罩"></td>
+        <td colspan="3"><input type="text" id="hw-safety-measure" placeholder="已用防火帆布覆蓋易燃物、配帶防護面罩、備滅火器"></td>
       </tr>
       <tr>
         <td class="label">消防噴淋系統可用</td>
@@ -254,8 +297,12 @@
         </td>
       </tr>
       <tr>
-        <td class="label">滅火器配置</td>
-        <td colspan="3"><input type="text" id="hw-extinguisher" placeholder="2 支 4kg 乾粉滅火器，壓力正常"></td>
+        <td class="label">滅火器數量/型號</td>
+        <td colspan="3"><input type="text" id="hw-extinguisher" placeholder="2 支 4L 乾粉滅火器，壓力正常"></td>
+      </tr>
+      <tr>
+        <td class="label">緊急聯繫電話</td>
+        <td colspan="3"><input type="text" id="hw-emergency-phone" placeholder="值班經理/安衛主管電話"></td>
       </tr>
     </table>
 
@@ -264,7 +311,7 @@
       <table class="hazard-table">
         <thead>
           <tr>
-            <th style="width: 25%;">階段</th>
+            <th style="width: 22%;">階段</th>
             <th>強制檢查項目與標準</th>
             <th style="width: 15%; text-align:center;">檢查結果</th>
           </tr>
@@ -272,17 +319,17 @@
         <tbody>
           <tr>
             <td>1. 作業前檢查</td>
-            <td>設備電線完好；用防火布覆蓋周邊易燃物；堵住空隙防火花墜落；備妥2滅火器並通知輔助監護人。</td>
+            <td>驗證設備完好；用防火布覆蓋周邊易燃物；清理周邊；堵住洞口縫隙；備妥2個4L滅火器；指派安全監督人員。</td>
             <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
           </tr>
           <tr>
             <td>2. 施工過程中</td>
-            <td>注意火花噴射範圍；加熱物件放置於防火支撐物上；專人全程監督。</td>
+            <td>注意火花噴射範圍及墜落點；加熱物件放置於耐熱防火支撐物上；專人全程安全監督。</td>
             <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
           </tr>
           <tr>
             <td>3. 當天完工後</td>
-            <td>完工後進行現場清理，並<strong>保持至少 2 小時之嚴格監督（確認無殘火隱患）</strong>。</td>
+            <td>檢查作業現場及火花濺落區無殘火隱患；<strong>作業完成後保持 2 小時之嚴格監督</strong>。</td>
             <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
           </tr>
         </tbody>
@@ -378,16 +425,20 @@
     const cWorker = document.getElementById('canvas-hw-worker');
     const cOwner = document.getElementById('canvas-owner');
 
-    if (cWorker && !hwWorkerSigPad) {
-      cWorker.width = cWorker.parentElement.clientWidth || 650;
+    if (cWorker) {
+      cWorker.width = cWorker.parentElement ? cWorker.parentElement.clientWidth : 650;
       cWorker.height = 90;
-      hwWorkerSigPad = new SignaturePad(cWorker, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      if (!hwWorkerSigPad) {
+        hwWorkerSigPad = new SignaturePad(cWorker, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      }
     }
 
-    if (cOwner && !ownerSigPad) {
-      cOwner.width = cOwner.parentElement.clientWidth || 650;
+    if (cOwner) {
+      cOwner.width = cOwner.parentElement ? cOwner.parentElement.clientWidth : 650;
       cOwner.height = 90;
-      ownerSigPad = new SignaturePad(cOwner, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      if (!ownerSigPad) {
+        ownerSigPad = new SignaturePad(cOwner, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      }
     }
   }
 
@@ -425,11 +476,12 @@
 
     setTimeout(() => {
       const canvas = document.getElementById(canvasId);
-      canvas.width = canvas.parentElement.clientWidth || 650;
-      canvas.height = 90;
-
-      const pad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
-      vendorSigPads.push({ id: cardCounter, pad: pad, canvas: canvas });
+      if (canvas) {
+        canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 650;
+        canvas.height = 90;
+        const pad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+        vendorSigPads.push({ id: cardCounter, pad: pad, canvas: canvas });
+      }
     }, 100);
   }
 
@@ -440,7 +492,7 @@
 
   function clearVendorCanvas(id) {
     const item = vendorSigPads.find(i => i.id === id);
-    if (item) item.pad.clear();
+    if (item && item.pad) item.pad.clear();
   }
 
   function saveDataAndExportPDF() {
@@ -448,16 +500,20 @@
       let validSignatures = 0;
       const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
 
-      // 1. 檢查乙方簽名
+      // 1. 檢查乙方通用簽名
       vendorSigPads.forEach(item => {
         if (item.pad && !item.pad.isEmpty()) {
           validSignatures++;
           const dataUrl = item.pad.toDataURL();
           const imgEle = document.getElementById(`img-vendor-${item.id}`);
-          imgEle.src = dataUrl;
-          imgEle.style.display = 'block';
-          item.canvas.parentElement.style.border = 'none';
-          item.canvas.style.display = 'none';
+          if (imgEle) {
+            imgEle.src = dataUrl;
+            imgEle.style.display = 'block';
+          }
+          if (item.canvas && item.canvas.parentElement) {
+            item.canvas.parentElement.style.border = 'none';
+            item.canvas.style.display = 'none';
+          }
         }
       });
 
@@ -466,7 +522,7 @@
         return;
       }
 
-      // 2. 檢查動火作業簽名 (若有選擇動火)
+      // 2. 檢查動火作業簽名 (若選擇有動火)
       if (isHotWork) {
         if (!hwWorkerSigPad || hwWorkerSigPad.isEmpty()) {
           alert("選擇【有動火作業】時，乙方動火人員必須於第 3 頁完成手寫簽名！");
@@ -480,24 +536,33 @@
         // 轉乙方動火簽名
         const hwDataUrl = hwWorkerSigPad.toDataURL();
         const hwImgEle = document.getElementById('img-hw-worker');
-        hwImgEle.src = hwDataUrl;
-        hwImgEle.style.display = 'block';
-        hwWorkerSigPad._canvas.parentElement.style.border = 'none';
-        hwWorkerSigPad._canvas.style.display = 'none';
+        if (hwImgEle) {
+          hwImgEle.src = hwDataUrl;
+          hwImgEle.style.display = 'block';
+        }
+        const hwCanvas = document.getElementById('canvas-hw-worker');
+        if (hwCanvas && hwCanvas.parentElement) {
+          hwCanvas.parentElement.style.border = 'none';
+          hwCanvas.style.display = 'none';
+        }
 
         // 轉甲方簽名
         const ownerDataUrl = ownerSigPad.toDataURL();
         const ownerImgEle = document.getElementById('img-owner');
-        ownerImgEle.src = ownerDataUrl;
-        ownerImgEle.style.display = 'block';
-        ownerSigPad._canvas.parentElement.style.border = 'none';
-        ownerSigPad._canvas.style.display = 'none';
+        if (ownerImgEle) {
+          ownerImgEle.src = ownerDataUrl;
+          ownerImgEle.style.display = 'block';
+        }
+        const ownerCanvas = document.getElementById('canvas-owner');
+        if (ownerCanvas && ownerCanvas.parentElement) {
+          ownerCanvas.parentElement.style.border = 'none';
+          ownerCanvas.style.display = 'none';
+        }
       }
 
       const formId = document.getElementById('form-id').value;
       const vendorName = document.getElementById('vendor-name').value || "未填寫廠商";
 
-      // 即時提示處理中
       alert("正在生成高解析度 PDF 並上傳至 Google Drive，請稍候 3~5 秒...");
 
       document.body.classList.add('pdf-mode');
@@ -519,22 +584,30 @@
         vendorSigPads.forEach(item => {
           if (item.canvas) {
             item.canvas.style.display = 'block';
-            item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
-            document.getElementById(`img-vendor-${item.id}`).style.display = 'none';
+            if (item.canvas.parentElement) {
+              item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+            }
+            const imgEle = document.getElementById(`img-vendor-${item.id}`);
+            if (imgEle) imgEle.style.display = 'none';
           }
         });
 
         // 復原動火簽名畫布
         if (isHotWork) {
-          if (hwWorkerSigPad) {
-            hwWorkerSigPad._canvas.style.display = 'block';
-            hwWorkerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
-            document.getElementById('img-hw-worker').style.display = 'none';
+          const hwCanvas = document.getElementById('canvas-hw-worker');
+          if (hwCanvas) {
+            hwCanvas.style.display = 'block';
+            if (hwCanvas.parentElement) hwCanvas.parentElement.style.border = '1.5px dashed #94a3b8';
+            const hwImg = document.getElementById('img-hw-worker');
+            if (hwImg) hwImg.style.display = 'none';
           }
-          if (ownerSigPad) {
-            ownerSigPad._canvas.style.display = 'block';
-            ownerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
-            document.getElementById('img-owner').style.display = 'none';
+
+          const ownerCanvas = document.getElementById('canvas-owner');
+          if (ownerCanvas) {
+            ownerCanvas.style.display = 'block';
+            if (ownerCanvas.parentElement) ownerCanvas.parentElement.style.border = '1.5px dashed #94a3b8';
+            const ownerImg = document.getElementById('img-owner');
+            if (ownerImg) ownerImg.style.display = 'none';
           }
         }
 
@@ -568,7 +641,7 @@
       });
 
     } catch (e) {
-      alert("生成過程發生錯誤，請重新整理網頁後重試：" + e.message);
+      alert("生成過程發生錯誤：" + e.message);
     }
   }
 
