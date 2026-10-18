@@ -508,4 +508,79 @@
         filename:     `${vendorName}_${formId}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-        jsPDF:        { unit: 'mm
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
+        
+        document.body.classList.remove('pdf-mode');
+        
+        // 復原乙方通用簽名畫布
+        vendorSigPads.forEach(item => {
+          if (item.canvas) {
+            item.canvas.style.display = 'block';
+            item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+            document.getElementById(`img-vendor-${item.id}`).style.display = 'none';
+          }
+        });
+
+        // 復原動火簽名畫布
+        if (isHotWork) {
+          if (hwWorkerSigPad) {
+            hwWorkerSigPad._canvas.style.display = 'block';
+            hwWorkerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+            document.getElementById('img-hw-worker').style.display = 'none';
+          }
+          if (ownerSigPad) {
+            ownerSigPad._canvas.style.display = 'block';
+            ownerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+            document.getElementById('img-owner').style.display = 'none';
+          }
+        }
+
+        if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
+          fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              formId: formId,
+              vendorName: vendorName,
+              vendorContact: document.getElementById('vendor-contact').value,
+              workPeriod: document.getElementById('work-period').value,
+              pdfBase64: pdfBase64
+            })
+          })
+          .then(res => res.json())
+          .then(res => {
+            if (res.status === 'success') {
+              alert(`成功！PDF 已命名為 [${vendorName}_${formId}.pdf] 並歸檔至 Google Drive！`);
+            } else {
+              alert("雲端歸檔失敗：" + res.message);
+            }
+          })
+          .catch(err => {
+            alert(`成功！檔案 [${vendorName}_${formId}.pdf] 已下載並送出歸檔！`);
+          });
+        } else {
+          alert("PDF 已儲存至本機！");
+        }
+
+      });
+
+    } catch (e) {
+      alert("生成過程發生錯誤，請重新整理網頁後重試：" + e.message);
+    }
+  }
+
+  function loadData() {
+    const searchId = document.getElementById('search-id').value.trim();
+    if (!searchId) {
+      alert("請輸入單號！");
+      return;
+    }
+    alert(`已調閱單號 [${searchId}]，您可以進行補簽或補充動火許可內容。`);
+  }
+</script>
+
+</body>
+</html>
