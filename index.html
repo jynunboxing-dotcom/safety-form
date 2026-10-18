@@ -52,7 +52,7 @@
     .sig-card-header { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
     .sig-card-header input, .sig-card-header select { padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background: #fff; }
     
-    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; min-height: 90px; }
+    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; position: relative; }
     .canvas-container canvas { width: 100%; height: 90px; display: block; touch-action: none; }
     .sig-img-preview { display: none; max-height: 70px; margin: 2px 0; }
 
@@ -207,20 +207,20 @@
     <div class="section-title" style="color:#166534;">🔥 本次施工是否有「動火作業」？（如：焊接、切割、打磨等）</div>
     <div style="display:flex; gap:20px; font-size:12.5px; font-weight:bold; margin-top:5px;">
       <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="no" checked onchange="toggleHotWorkSection()"> 否，無動火作業 (無需甲方簽名)</label>
-      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="yes" onchange="toggleHotWorkSection()"> 是，有動火作業 (連動開啟第 3 頁動火許可與甲方簽名框)</label>
+      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="yes" onchange="toggleHotWorkSection()"> 是，有動火作業 (開啟第 3 頁用火許可與動火人簽名)</label>
     </div>
   </div>
 
   <!-- 乙方廠商簽名區 -->
   <div class="sig-group-title">
-    <span>乙方廠商電子簽名區（廠商施工負責人與作業人員簽名）</span>
+    <span>乙方廠商電子簽名區（施工負責人與作業人員）</span>
     <button class="btn btn-add no-pdf" onclick="addVendorSignatureCard('作業人員')">+ 新增作業人員</button>
   </div>
 
   <div id="vendor-sig-cards-container"></div>
 
 
-  <!-- ==================== 第三頁：公司內部用火許可證 (選填：有動火才顯示) ==================== -->
+  <!-- ==================== 第三頁：公司內部用火許可證 (有動火才顯示) ==================== -->
   <div id="hotwork-section" style="display: none;">
     <div class="page-break"></div>
 
@@ -290,14 +290,35 @@
       </table>
     </div>
 
-    <!-- 甲方 / 迪卡儂審批簽名區 (只有在選擇「有動火」時才會出現) -->
+    <!-- 動火作業：雙方簽核區 (包含乙方動火人 + 甲方審批人) -->
     <div class="sig-group-title" style="color:#1e3a8a;">
-      <span>甲方 / 迪卡儂審批簽名區 (動火作業強制簽核)</span>
+      <span>動火作業專屬簽核區 (乙方動火人員 + 甲方主管審批)</span>
     </div>
 
+    <!-- 乙方動火操作人員 -->
     <div class="sig-card">
       <div class="sig-card-header">
-        <span style="font-size:12px; font-weight:bold; color:#1e3a8a;">審批權責角色：</span>
+        <span style="font-size:12px; font-weight:bold; color:#166534;">乙方角色：</span>
+        <select id="hw-worker-role">
+          <option value="動火操作人員">乙方 動火操作人員</option>
+          <option value="現場防護監督人">乙方 現場防護監督人</option>
+        </select>
+        <input type="text" id="hw-worker-name" placeholder="乙方動火人員姓名" style="flex:1;">
+      </div>
+      <div class="canvas-container">
+        <canvas id="canvas-hw-worker"></canvas>
+        <img id="img-hw-worker" class="sig-img-preview" alt="乙方動火簽名檔">
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
+        <button class="btn btn-outline" onclick="hwWorkerSigPad.clear()">清除重簽</button>
+        <span style="font-size: 10px; color: #94a3b8;">請乙方動火人員在此處手寫簽名</span>
+      </div>
+    </div>
+
+    <!-- 甲方 / 迪卡儂審批簽名 -->
+    <div class="sig-card">
+      <div class="sig-card-header">
+        <span style="font-size:12px; font-weight:bold; color:#1e3a8a;">甲方審批：</span>
         <select id="owner-role">
           <option value="值班經理">迪卡儂 值班經理</option>
           <option value="安全營運經理">迪卡儂 安全營運經理</option>
@@ -305,15 +326,13 @@
         </select>
         <input type="text" id="owner-name" placeholder="甲方審批人姓名" style="flex:1;">
       </div>
-      
       <div class="canvas-container">
         <canvas id="canvas-owner"></canvas>
         <img id="img-owner" class="sig-img-preview" alt="甲方簽名檔">
       </div>
-      
       <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
         <button class="btn btn-outline" onclick="ownerSigPad.clear()">清除重簽</button>
-        <span style="font-size: 10px; color: #94a3b8;">請甲方主管在此處完成電子手寫簽名</span>
+        <span style="font-size: 10px; color: #94a3b8;">請甲方主管在此處完成審批簽名</span>
       </div>
     </div>
 
@@ -331,6 +350,7 @@
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiSrYT48bt3LcyBc_R1WCzAE1QShaIH_8PdccvesR6C77h3CACQSNSJAveRN0mNVL7/exec";
 
   let vendorSigPads = [];
+  let hwWorkerSigPad = null;
   let ownerSigPad = null;
   let historyLogs = [];
   let cardCounter = 0;
@@ -343,36 +363,50 @@
     // 預設建立第一個乙方簽名框 (施工負責人)
     addVendorSignatureCard('施工負責人');
 
-    // 初始化甲方簽名畫布
-    initOwnerSignaturePad();
+    // 初始化第 3 頁專屬簽名畫布
+    initHotWorkPads();
   };
 
-  // 控制動火許可頁面顯示/隱藏
   function toggleHotWorkSection() {
     const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
-    document.getElementById('hotwork-section').style.display = isHotWork ? 'block' : 'none';
+    const section = document.getElementById('hotwork-section');
+    section.style.display = isHotWork ? 'block' : 'none';
     
-    // 如果切換成「有動火」，重新調整甲方簽名 Canvas 解析度
-    if (isHotWork && ownerSigPad) {
+    if (isHotWork) {
       setTimeout(() => {
-        const canvas = document.getElementById('canvas-owner');
-        canvas.width = canvas.parentElement.clientWidth || 650;
-        canvas.height = 90;
-      }, 100);
+        resizeCanvas(document.getElementById('canvas-hw-worker'), hwWorkerSigPad);
+        resizeCanvas(document.getElementById('canvas-owner'), ownerSigPad);
+      }, 150);
     }
   }
 
-  // 初始化甲方簽名板
-  function initOwnerSignaturePad() {
-    const canvas = document.getElementById('canvas-owner');
+  function resizeCanvas(canvas, padInstance) {
+    if (!canvas) return;
+    const parentWidth = canvas.parentElement.clientWidth || 650;
+    canvas.width = parentWidth;
+    canvas.height = 90;
+    if (padInstance) padInstance.clear();
+  }
+
+  function initHotWorkPads() {
     setTimeout(() => {
-      canvas.width = canvas.parentElement.clientWidth || 650;
-      canvas.height = 90;
-      ownerSigPad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      const cWorker = document.getElementById('canvas-hw-worker');
+      const cOwner = document.getElementById('canvas-owner');
+
+      if (cWorker) {
+        cWorker.width = cWorker.parentElement.clientWidth || 650;
+        cWorker.height = 90;
+        hwWorkerSigPad = new SignaturePad(cWorker, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      }
+
+      if (cOwner) {
+        cOwner.width = cOwner.parentElement.clientWidth || 650;
+        cOwner.height = 90;
+        ownerSigPad = new SignaturePad(cOwner, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      }
     }, 200);
   }
 
-  // 新增乙方簽名卡片
   function addVendorSignatureCard(defaultRole = '作業人員') {
     cardCounter++;
     const cardId = 'vendor-sig-card-' + cardCounter;
@@ -385,7 +419,7 @@
         <div class="sig-card-header">
           <select id="vendor-role-${cardCounter}">
             <option value="施工負責人" ${defaultRole==='施工負責人'?'selected':''}>乙方 施工負責人</option>
-            <option value="作業人員" ${defaultRole==='作業人員'?'selected':''}>乙方 作業人員</option>
+            <option value="作業人員" ${defaultRole==='作業人员'?'selected':''}>乙方 作業人員</option>
           </select>
           <input type="text" id="vendor-name-${cardCounter}" placeholder="簽署人姓名 (例如: 王大明)" style="flex:1;">
           ${cardCounter > 1 ? `<button class="btn-danger no-pdf" onclick="removeVendorSignatureCard('${cardId}',${cardCounter})">刪除</button>` : ''}
@@ -435,7 +469,7 @@
     let validSignatures = 0;
     const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
 
-    // 1. 處理乙方簽名
+    // 1. 檢查乙方簽名
     vendorSigPads.forEach(item => {
       if (!item.pad.isEmpty()) {
         validSignatures++;
@@ -453,12 +487,26 @@
       return;
     }
 
-    // 2. 如果選擇「有動火作業」，檢查甲方是否簽名
+    // 2. 檢查動火作業簽名
     if (isHotWork) {
-      if (!ownerSigPad || ownerSigPad.isEmpty()) {
-        alert("選擇有動火作業時，甲方 (迪卡儂主管) 必須於第 3 頁完成審批簽名！");
+      if (!hwWorkerSigPad || hwWorkerSigPad.isEmpty()) {
+        alert("選擇有動火作業時，乙方動火人員必須於第 3 頁完成手寫簽名！");
         return;
       }
+      if (!ownerSigPad || ownerSigPad.isEmpty()) {
+        alert("選擇有動火作業時，甲方主管必須於第 3 頁完成審批簽名！");
+        return;
+      }
+
+      // 轉乙方動火簽名
+      const hwDataUrl = hwWorkerSigPad.toDataURL();
+      const hwImgEle = document.getElementById('img-hw-worker');
+      hwImgEle.src = hwDataUrl;
+      hwImgEle.style.display = 'block';
+      hwWorkerSigPad._canvas.parentElement.style.border = 'none';
+      hwWorkerSigPad._canvas.style.display = 'none';
+
+      // 轉甲方簽名
       const ownerDataUrl = ownerSigPad.toDataURL();
       const ownerImgEle = document.getElementById('img-owner');
       ownerImgEle.src = ownerDataUrl;
@@ -485,18 +533,25 @@
       
       document.body.classList.remove('pdf-mode');
       
-      // 復原乙方簽名畫布
+      // 復原乙方通用簽名畫布
       vendorSigPads.forEach(item => {
         item.canvas.style.display = 'block';
         item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
         document.getElementById(`img-vendor-${item.id}`).style.display = 'none';
       });
 
-      // 復原甲方簽名畫布
-      if (isHotWork && ownerSigPad) {
-        ownerSigPad._canvas.style.display = 'block';
-        ownerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
-        document.getElementById('img-owner').style.display = 'none';
+      // 復原動火簽名畫布
+      if (isHotWork) {
+        if (hwWorkerSigPad) {
+          hwWorkerSigPad._canvas.style.display = 'block';
+          hwWorkerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+          document.getElementById('img-hw-worker').style.display = 'none';
+        }
+        if (ownerSigPad) {
+          ownerSigPad._canvas.style.display = 'block';
+          ownerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+          document.getElementById('img-owner').style.display = 'none';
+        }
       }
 
       if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
