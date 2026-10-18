@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>承攬作業危害因素告知與用火許可電子簽署系統</title>
+  <title>承攬作業危害因素告知與電子簽署系統</title>
   
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -37,7 +37,6 @@
     .section-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; background: #ffffff; }
     .section-title { font-size: 13.5px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 6px; border-left: 4px solid #2563eb; padding-left: 6px; }
     
-    /* 條款與清單 */
     .rule-list { margin: 0; padding-left: 18px; font-size: 11px; color: #334155; line-height: 1.45; }
     .rule-list li { margin-bottom: 3px; }
     
@@ -47,20 +46,18 @@
 
     .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 11.5px; font-weight: bold; color: #166534; cursor: pointer; }
 
-    /* 簽名板卡片 */
+    /* 簽名板區域 */
     .sig-group-title { font-size: 13.5px; font-weight: bold; color: #0f172a; margin-top: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
     .sig-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; background: #fafafa; margin-bottom: 8px; }
     .sig-card-header { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
     .sig-card-header input, .sig-card-header select { padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background: #fff; }
     
-    .canvas-container { border: 1px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; }
-    .canvas-container canvas { width: 100%; height: 85px; display: block; }
-    .sig-img-preview { display: none; max-height: 65px; margin: 2px 0; }
+    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; min-height: 90px; }
+    .canvas-container canvas { width: 100%; height: 90px; display: block; touch-action: none; }
+    .sig-img-preview { display: none; max-height: 70px; margin: 2px 0; }
 
-    /* 分頁控制：強制 3 頁 */
     .page-break { page-break-before: always !important; break-before: page !important; margin-top: 15px; }
 
-    /* 按鈕樣式 */
     .btn { background: #2563eb; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
     .btn-add { background: #059669; }
     .btn-danger { background: #dc2626; color: white; padding: 2px 6px; font-size: 10px; border-radius: 4px; border: none; cursor: pointer; }
@@ -115,9 +112,9 @@
     </tr>
     <tr>
       <td class="label">工作場所負責人</td>
-      <td><input type="text" id="site-manager" placeholder="責任主管姓名"></td>
+      <td><input type="text" id="site-manager" placeholder="廠商現場負責人姓名"></td>
       <td class="label">安衛管理人員</td>
-      <td><input type="text" id="safety-manager" placeholder="安衛人員姓名"></td>
+      <td><input type="text" id="safety-manager" placeholder="廠商安衛人員姓名"></td>
     </tr>
   </table>
 
@@ -133,7 +130,7 @@
   </div>
 
   <div class="section-card">
-    <div class="section-title">作業項目、危害因素與防止對策總表 (14項重點摘要)</div>
+    <div class="section-title">作業項目、危害因素與防止對策總表 (重點摘要)</div>
     <table class="hazard-table">
       <thead>
         <tr>
@@ -159,182 +156,170 @@
           <td>安裝安全網、使用三點式安全帶及安全母索；防滑舌片不可解開；吊物下方嚴禁站人。</td>
         </tr>
         <tr>
-          <td>四、裝卸物品</td>
-          <td>物料掉落、割傷、崩塌</td>
-          <td>高處作業設置擋板防掉落；嚴禁下拋物品；配戴安全帽並扣好顎帶；易碎品謹慎搬運。</td>
-        </tr>
-        <tr>
-          <td>五、高空作業 (≥2M)</td>
+          <td>四、高空作業 (≥2M)</td>
           <td>墜(滾)落、物料掉落、感電</td>
           <td>設置護欄護蓋或安全網；嚴禁酒後或身體不適作業；嚴禁於施工架上使用合梯。</td>
         </tr>
         <tr>
-          <td>六、焊接、動火作業</td>
+          <td>五、焊接、動火作業</td>
           <td>感電、爆炸、中毒、火災</td>
           <td>電焊機設自動電擊防止裝置；配戴絕緣防護具；2米內備滅火器並鋪設防火毯；鋼瓶固定。</td>
         </tr>
         <tr>
-          <td>七、局限空間作業</td>
+          <td>六、局限空間作業</td>
           <td>缺氧、中毒、可燃氣體</td>
           <td>進場前實施氣體測定；設置強制機械通風；配戴呼吸式防護具；每2小時記錄一次。</td>
         </tr>
-        <tr>
-          <td>八、環境清潔消毒</td>
-          <td>有害物接觸、噴傷</td>
-          <td>穿著全套個人防護具 (防毒面具、長統膠鞋)；噴藥完畢沐浴更衣；回收藥瓶。</td>
-        </tr>
-        <tr>
-          <td>九、粉刷裝修塗裝</td>
-          <td>墜落、粉塵、中毒、感電</td>
-          <td>移動式施工架符合指引；電線架高或保護；強制通風與佩戴護目鏡面罩。</td>
-        </tr>
-        <tr>
-          <td>十、跌倒與工作環境</td>
-          <td>突出物、落差、滑溜</td>
-          <td>移去突起物或標示警示；建材堆放整齊不占用通道；滑溜處設置止滑措施。</td>
-        </tr>
-        <tr>
-          <td>十一、電氣作業</td>
-          <td>感電、觸電</td>
-          <td>高壓設備由專業人員引導；電路裝設漏電斷路器；自拉電線架高並加掛標示。</td>
-        </tr>
-        <tr>
-          <td>十二、物體飛落與機械</td>
-          <td>飛落傷人、夾捲切擦傷</td>
-          <td>物體綑牢並指派指揮員；圓鋸機研磨機防護罩嚴禁拆除；轉動件設置護欄。</td>
-        </tr>
       </tbody>
     </table>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已詳閱此份工作場所危害因素告知單，絕對同意並遵照上述事項辦理。
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人（承攬廠商代表）已詳閱危害因素告知單，絕對同意並遵照上述事項辦理。
     </label>
   </div>
 
 
-  <!-- ==================== 第二頁：迪卡儂勞工勤前教育記錄與簽名 ==================== -->
+  <!-- ==================== 第二頁：勤前教育記錄與乙方簽名 ==================== -->
   <div class="page-break"></div>
 
   <div class="header">
-    <h1>迪卡儂一般作業勞工勤前教育記錄與危害告知</h1>
-    <p>工具箱會議 (Toolbox Meeting) 與進場安衛切結簽署</p>
+    <h1>一般作業勞工勤前教育記錄與危害告知</h1>
+    <p>工具箱會議 (Toolbox Meeting) 暨施工人員安全切結</p>
   </div>
 
   <div class="section-card">
-    <div class="section-title">遵守內容簡述 (遵守條款)</div>
+    <div class="section-title">遵守內容簡述</div>
     <ol class="rule-list">
       <li>進入工區配戴安全帽並佩掛識別證，非施工人員嚴禁進入工區。</li>
-      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施（鷹架、長條型防墜網、中欄杆）。</li>
+      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施。</li>
       <li><strong>上班前、工作中嚴禁飲用含有酒精性飲料（包括啤酒、維士比、保力達等）。</strong></li>
-      <li>動火作業（焊接、切割、打磨等）須指派專人監督，備妥滅火器、防火毯，完工後自主檢查無火花並知悉安衛人員複檢後始可離開。</li>
+      <li>動火作業須指派專人監督，備妥滅火器、防火毯，完工後自主檢查無火花。</li>
       <li>使用電器設備應裝設漏電斷路器、合格電纜線，嚴禁裸線插接，電線應架高。</li>
-      <li>移動式施工架須設置上下設備及護欄；高差1.5公尺以上場所應設置安全上下設備。</li>
-      <li>從事有害或吊掛作業時，須使用合格個人防護具，吊掛人員須持證照並嚴禁人員進入吊舉物下方。</li>
-      <li>氧氣、乙炔鋼瓶應綁紮固定分開儲存，儲存處嚴禁煙火，使用中鋼瓶需裝防迴火逆止閥。</li>
-      <li>施工現場嚴禁吸菸（吸菸須至指定地點），<strong>嚴禁吵架、打架、賭博等違法行為，違者立即驅離。</strong></li>
+      <li>施工現場嚴禁吸菸（吸菸須至指定地點），<strong>嚴禁吵架、打架、賭博等違法行為。</strong></li>
       <li>合梯使用規定：堅固構造、無損傷、梯寬≥30cm、梯腳角度在75°以內且繫材扣牢。</li>
-      <li>作業時不得任意破壞現場安全防護設施；施工作業應劃定施工範圍，防止閒雜人員靠近。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 勞工同意遵守以上危害告知與勤前教育條款，絕無異議。
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 乙方施工人員同意遵守以上危害告知與勤前教育條款，絕無異議。
     </label>
   </div>
 
-  <!-- 多人簽名卡片區 -->
+  <!-- 本次是否有動火作業選擇 -->
+  <div class="section-card no-pdf" style="background:#f0fdf4; border-color:#86efac;">
+    <div class="section-title" style="color:#166534;">🔥 本次施工是否有「動火作業」？（如：焊接、切割、打磨等）</div>
+    <div style="display:flex; gap:20px; font-size:12.5px; font-weight:bold; margin-top:5px;">
+      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="no" checked onchange="toggleHotWorkSection()"> 否，無動火作業 (無需甲方簽名)</label>
+      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="yes" onchange="toggleHotWorkSection()"> 是，有動火作業 (連動開啟第 3 頁動火許可與甲方簽名框)</label>
+    </div>
+  </div>
+
+  <!-- 乙方廠商簽名區 -->
   <div class="sig-group-title">
-    <span>電子簽名區（施工負責人與作業人員）</span>
-    <button class="btn btn-add no-pdf" onclick="addSignatureCard('作業人員')">+ 新增作業人員</button>
+    <span>乙方廠商電子簽名區（廠商施工負責人與作業人員簽名）</span>
+    <button class="btn btn-add no-pdf" onclick="addVendorSignatureCard('作業人員')">+ 新增作業人員</button>
   </div>
 
-  <div id="sig-cards-container"></div>
+  <div id="vendor-sig-cards-container"></div>
 
 
-  <!-- ==================== 第三頁：公司內部用火許可證 ==================== -->
-  <div class="page-break"></div>
+  <!-- ==================== 第三頁：公司內部用火許可證 (選填：有動火才顯示) ==================== -->
+  <div id="hotwork-section" style="display: none;">
+    <div class="page-break"></div>
 
-  <div class="header">
-    <h1>公司內部用火許可證 (Hot Work Permit)</h1>
-    <p>迪卡儂及總體工程代理負責人強制安全規則 (有效期 24 小時)</p>
-  </div>
+    <div class="header">
+      <h1>公司內部用火許可證 (Hot Work Permit)</h1>
+      <p>動火作業強制安全規則與檢核表 (有效期 24 小時)</p>
+    </div>
 
-  <table class="info-table">
-    <tr>
-      <td class="label">動火目的</td>
-      <td colspan="3"><input type="text" id="hw-purpose" placeholder="例如：金屬管道焊接與切割打磨"></td>
-    </tr>
-    <tr>
-      <td class="label">具體位置</td>
-      <td><input type="text" id="hw-location" placeholder="例如：1F 後方機房區域"></td>
-      <td class="label">已知風險標明</td>
-      <td><input type="text" id="hw-risk" placeholder="例如：周邊有隱蔽電線、高空易燃物"></td>
-    </tr>
-    <tr>
-      <td class="label">現場防護措施</td>
-      <td colspan="3"><input type="text" id="hw-safety-measure" placeholder="已鋪設防火毯、清空2米內易燃物、配帶防護面罩"></td>
-    </tr>
-    <tr>
-      <td class="label">消防噴淋系統可用</td>
-      <td>
-        <select id="hw-sprinkler"><option value="是">是</option><option value="否">否</option></select>
-      </td>
-      <td class="label">消防栓展開有水</td>
-      <td>
-        <select id="hw-hydrant"><option value="是">是</option><option value="否">否</option></select>
-      </td>
-    </tr>
-    <tr>
-      <td class="label">滅火器配置</td>
-      <td colspan="3"><input type="text" id="hw-extinguisher" placeholder="2 支 4kg 乾粉滅火器，壓力正常"></td>
-    </tr>
-    <tr>
-      <td class="label">緊急聯繫電話</td>
-      <td colspan="3"><input type="text" id="hw-emergency-phone" placeholder="廠區安衛：0912-345678 / 值班經理：0987-654321"></td>
-    </tr>
-  </table>
-
-  <div class="section-card">
-    <div class="section-title">用火安全三階段檢核表</div>
-    <table class="hazard-table">
-      <thead>
-        <tr>
-          <th style="width: 25%;">階段</th>
-          <th>強制檢查項目與標準</th>
-          <th style="width: 15%; text-align:center;">檢查結果</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1. 作業前檢查</td>
-          <td>設備電線完好；用防火布覆蓋周邊易燃物；堵住空隙防火花墜落；備妥2滅火器並通知輔助監護人。</td>
-          <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
-        </tr>
-        <tr>
-          <td>2. 施工過程中</td>
-          <td>注意火花噴射範圍；加熱物件放置於防火支撐物上；專人全程監督。</td>
-          <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
-        </tr>
-        <tr>
-          <td>3. 當天完工後</td>
-          <td>完工後進行現場清理，並<strong>保持至少 2 小時之嚴格監督（確認無殘火隱患）</strong>。</td>
-          <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="section-card">
-    <div class="section-title">動火許可審批簽核</div>
-    <p style="font-size:11px; color:#475569; margin:3px 0;">迪卡儂權責主管與施工負責人確認上述安全措施已全部落實，同意發放用火許可。</p>
-    <table class="info-table" style="margin-top:8px;">
+    <table class="info-table">
       <tr>
-        <td class="label">迪卡儂審批人</td>
-        <td><input type="text" id="hw-decathlon-manager" placeholder="值班經理/安全主管簽名"></td>
-        <td class="label">施工代理負責人</td>
-        <td><input type="text" id="hw-vendor-agent" placeholder="廠商工程負責人簽名"></td>
+        <td class="label">動火目的</td>
+        <td colspan="3"><input type="text" id="hw-purpose" placeholder="例如：金屬管道焊接與切割打磨"></td>
+      </tr>
+      <tr>
+        <td class="label">具體位置</td>
+        <td><input type="text" id="hw-location" placeholder="例如：1F 後方機房區域"></td>
+        <td class="label">已知風險標明</td>
+        <td><input type="text" id="hw-risk" placeholder="例如：周邊有隱蔽電線、高空易燃物"></td>
+      </tr>
+      <tr>
+        <td class="label">現場防護措施</td>
+        <td colspan="3"><input type="text" id="hw-safety-measure" placeholder="已鋪設防火毯、清空2米內易燃物、配帶防護面罩"></td>
+      </tr>
+      <tr>
+        <td class="label">消防噴淋系統可用</td>
+        <td>
+          <select id="hw-sprinkler"><option value="是">是</option><option value="否">否</option></select>
+        </td>
+        <td class="label">消防栓展開有水</td>
+        <td>
+          <select id="hw-hydrant"><option value="是">是</option><option value="否">否</option></select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">滅火器配置</td>
+        <td colspan="3"><input type="text" id="hw-extinguisher" placeholder="2 支 4kg 乾粉滅火器，壓力正常"></td>
       </tr>
     </table>
+
+    <div class="section-card">
+      <div class="section-title">用火安全三階段檢核表</div>
+      <table class="hazard-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">階段</th>
+            <th>強制檢查項目與標準</th>
+            <th style="width: 15%; text-align:center;">檢查結果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. 作業前檢查</td>
+            <td>設備電線完好；用防火布覆蓋周邊易燃物；堵住空隙防火花墜落；備妥2滅火器並通知輔助監護人。</td>
+            <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
+          </tr>
+          <tr>
+            <td>2. 施工過程中</td>
+            <td>注意火花噴射範圍；加熱物件放置於防火支撐物上；專人全程監督。</td>
+            <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
+          </tr>
+          <tr>
+            <td>3. 當天完工後</td>
+            <td>完工後進行現場清理，並<strong>保持至少 2 小時之嚴格監督（確認無殘火隱患）</strong>。</td>
+            <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 甲方 / 迪卡儂審批簽名區 (只有在選擇「有動火」時才會出現) -->
+    <div class="sig-group-title" style="color:#1e3a8a;">
+      <span>甲方 / 迪卡儂審批簽名區 (動火作業強制簽核)</span>
+    </div>
+
+    <div class="sig-card">
+      <div class="sig-card-header">
+        <span style="font-size:12px; font-weight:bold; color:#1e3a8a;">審批權責角色：</span>
+        <select id="owner-role">
+          <option value="值班經理">迪卡儂 值班經理</option>
+          <option value="安全營運經理">迪卡儂 安全營運經理</option>
+          <option value="工程主管">迪卡儂 工程主管</option>
+        </select>
+        <input type="text" id="owner-name" placeholder="甲方審批人姓名" style="flex:1;">
+      </div>
+      
+      <div class="canvas-container">
+        <canvas id="canvas-owner"></canvas>
+        <img id="img-owner" class="sig-img-preview" alt="甲方簽名檔">
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
+        <button class="btn btn-outline" onclick="ownerSigPad.clear()">清除重簽</button>
+        <span style="font-size: 10px; color: #94a3b8;">請甲方主管在此處完成電子手寫簽名</span>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 操作按鈕 (PDF 輸出時隱藏) -->
+  <!-- 操作按鈕 -->
   <div class="actions no-pdf">
     <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並自動歸檔至 Google Drive</button>
   </div>
@@ -342,39 +327,68 @@
 </div>
 
 <script>
-  // ⚠️ 請在下方雙引號內貼上您的 Google Apps Script 部署網址 ⚠️
+  // ⚠️ 請在此處雙引號內貼上您的 Google Apps Script 部署網址 ⚠️
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiSrYT48bt3LcyBc_R1WCzAE1QShaIH_8PdccvesR6C77h3CACQSNSJAveRN0mNVL7/exec";
 
-  let sigPadInstances = [];
+  let vendorSigPads = [];
+  let ownerSigPad = null;
   let historyLogs = [];
   let cardCounter = 0;
 
   window.onload = function() {
-    // 施工單號格式：SC-年份+3位流水號 (例如 SC-2026001)
     const currentYear = new Date().getFullYear();
     const randomSeq = String(Math.floor(Math.random() * 99) + 1).padStart(3, '0');
     document.getElementById('form-id').value = 'SC-' + currentYear + randomSeq;
 
-    // 預設建立第一個簽名框（施工負責人）
-    addSignatureCard('施工負責人');
+    // 預設建立第一個乙方簽名框 (施工負責人)
+    addVendorSignatureCard('施工負責人');
+
+    // 初始化甲方簽名畫布
+    initOwnerSignaturePad();
   };
 
-  function addSignatureCard(defaultRole = '作業人員') {
-    cardCounter++;
-    const cardId = 'sig-card-' + cardCounter;
-    const canvasId = 'canvas-' + cardCounter;
-    const imgId = 'img-' + cardCounter;
+  // 控制動火許可頁面顯示/隱藏
+  function toggleHotWorkSection() {
+    const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
+    document.getElementById('hotwork-section').style.display = isHotWork ? 'block' : 'none';
+    
+    // 如果切換成「有動火」，重新調整甲方簽名 Canvas 解析度
+    if (isHotWork && ownerSigPad) {
+      setTimeout(() => {
+        const canvas = document.getElementById('canvas-owner');
+        canvas.width = canvas.parentElement.clientWidth || 650;
+        canvas.height = 90;
+      }, 100);
+    }
+  }
 
-    const container = document.getElementById('sig-cards-container');
+  // 初始化甲方簽名板
+  function initOwnerSignaturePad() {
+    const canvas = document.getElementById('canvas-owner');
+    setTimeout(() => {
+      canvas.width = canvas.parentElement.clientWidth || 650;
+      canvas.height = 90;
+      ownerSigPad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+    }, 200);
+  }
+
+  // 新增乙方簽名卡片
+  function addVendorSignatureCard(defaultRole = '作業人員') {
+    cardCounter++;
+    const cardId = 'vendor-sig-card-' + cardCounter;
+    const canvasId = 'canvas-vendor-' + cardCounter;
+    const imgId = 'img-vendor-' + cardCounter;
+
+    const container = document.getElementById('vendor-sig-cards-container');
     const cardHtml = `
       <div class="sig-card" id="${cardId}">
         <div class="sig-card-header">
-          <select id="role-${cardCounter}">
-            <option value="施工負責人" ${defaultRole==='施工負責人'?'selected':''}>施工負責人</option>
-            <option value="作業人員" ${defaultRole==='作業人員'?'selected':''}>作業人員</option>
+          <select id="vendor-role-${cardCounter}">
+            <option value="施工負責人" ${defaultRole==='施工負責人'?'selected':''}>乙方 施工負責人</option>
+            <option value="作業人員" ${defaultRole==='作業人員'?'selected':''}>乙方 作業人員</option>
           </select>
-          <input type="text" id="name-${cardCounter}" placeholder="簽署人姓名 (例如: 王大明)" style="flex:1;">
-          ${cardCounter > 1 ? `<button class="btn-danger no-pdf" onclick="removeSignatureCard('${cardId}',${cardCounter})">刪除</button>` : ''}
+          <input type="text" id="vendor-name-${cardCounter}" placeholder="簽署人姓名 (例如: 王大明)" style="flex:1;">
+          ${cardCounter > 1 ? `<button class="btn-danger no-pdf" onclick="removeVendorSignatureCard('${cardId}',${cardCounter})">刪除</button>` : ''}
         </div>
         
         <div class="canvas-container">
@@ -383,8 +397,8 @@
         </div>
         
         <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
-          <button class="btn btn-outline" onclick="clearSingleCanvas(${cardCounter})">清除重簽</button>
-          <span style="font-size: 10px; color: #94a3b8;">請使用手指或觸控筆在上方手寫簽名</span>
+          <button class="btn btn-outline" onclick="clearVendorCanvas(${cardCounter})">清除重簽</button>
+          <span style="font-size: 10px; color: #94a3b8;">請乙方人員在此處手寫簽名</span>
         </div>
       </div>
     `;
@@ -394,20 +408,20 @@
     setTimeout(() => {
       const canvas = document.getElementById(canvasId);
       canvas.width = canvas.parentElement.clientWidth || 650;
-      canvas.height = 85;
+      canvas.height = 90;
 
       const pad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
-      sigPadInstances.push({ id: cardCounter, pad: pad, canvas: canvas });
-    }, 50);
+      vendorSigPads.push({ id: cardCounter, pad: pad, canvas: canvas });
+    }, 100);
   }
 
-  function removeSignatureCard(cardId, id) {
+  function removeVendorSignatureCard(cardId, id) {
     document.getElementById(cardId).remove();
-    sigPadInstances = sigPadInstances.filter(item => item.id !== id);
+    vendorSigPads = vendorSigPads.filter(item => item.id !== id);
   }
 
-  function clearSingleCanvas(id) {
-    const item = sigPadInstances.find(i => i.id === id);
+  function clearVendorCanvas(id) {
+    const item = vendorSigPads.find(i => i.id === id);
     if (item) item.pad.clear();
   }
 
@@ -419,44 +433,42 @@
 
   function saveDataAndExportPDF() {
     let validSignatures = 0;
-    let newSignatures = [];
+    const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
 
-    sigPadInstances.forEach(item => {
+    // 1. 處理乙方簽名
+    vendorSigPads.forEach(item => {
       if (!item.pad.isEmpty()) {
         validSignatures++;
-        const role = document.getElementById(`role-${item.id}`).value;
-        const name = document.getElementById(`name-${item.id}`).value || '未填寫姓名';
         const dataUrl = item.pad.toDataURL();
-
-        const imgEle = document.getElementById(`img-${item.id}`);
+        const imgEle = document.getElementById(`img-vendor-${item.id}`);
         imgEle.src = dataUrl;
         imgEle.style.display = 'block';
         item.canvas.parentElement.style.border = 'none';
         item.canvas.style.display = 'none';
-
-        newSignatures.push({ role: role, name: name, time: new Date().toLocaleString('zh-TW'), image: dataUrl });
       }
     });
 
-    if (validSignatures === 0 && historyLogs.length === 0) {
-      alert("請至少在簽名板上完成簽名！");
+    if (validSignatures === 0) {
+      alert("請至少讓一位乙方施工人員完成簽名！");
       return;
+    }
+
+    // 2. 如果選擇「有動火作業」，檢查甲方是否簽名
+    if (isHotWork) {
+      if (!ownerSigPad || ownerSigPad.isEmpty()) {
+        alert("選擇有動火作業時，甲方 (迪卡儂主管) 必須於第 3 頁完成審批簽名！");
+        return;
+      }
+      const ownerDataUrl = ownerSigPad.toDataURL();
+      const ownerImgEle = document.getElementById('img-owner');
+      ownerImgEle.src = ownerDataUrl;
+      ownerImgEle.style.display = 'block';
+      ownerSigPad._canvas.parentElement.style.border = 'none';
+      ownerSigPad._canvas.style.display = 'none';
     }
 
     const formId = document.getElementById('form-id').value;
     const vendorName = document.getElementById('vendor-name').value || "未填寫廠商";
-
-    newSignatures.forEach(s => historyLogs.push(s));
-
-    // 本地備份
-    const formData = {
-      formId: formId,
-      vendorName: vendorName,
-      vendorContact: document.getElementById('vendor-contact').value,
-      workPeriod: document.getElementById('work-period').value,
-      historyLogs: historyLogs
-    };
-    localStorage.setItem('SAFETY_FORM_' + formId, JSON.stringify(formData));
 
     document.body.classList.add('pdf-mode');
 
@@ -469,15 +481,23 @@
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // 匯出 PDF 並上傳至雲端
     html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
       
       document.body.classList.remove('pdf-mode');
-      sigPadInstances.forEach(item => {
+      
+      // 復原乙方簽名畫布
+      vendorSigPads.forEach(item => {
         item.canvas.style.display = 'block';
-        item.canvas.parentElement.style.border = '1px dashed #94a3b8';
-        document.getElementById(`img-${item.id}`).style.display = 'none';
+        item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+        document.getElementById(`img-vendor-${item.id}`).style.display = 'none';
       });
+
+      // 復原甲方簽名畫布
+      if (isHotWork && ownerSigPad) {
+        ownerSigPad._canvas.style.display = 'block';
+        ownerSigPad._canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+        document.getElementById('img-owner').style.display = 'none';
+      }
 
       if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
         fetch(GOOGLE_SCRIPT_URL, {
@@ -494,7 +514,7 @@
         .then(res => res.json())
         .then(res => {
           if (res.status === 'success') {
-            alert(`成功！PDF 已自動命名為 [${vendorName}_${formId}.pdf] 並存入 Google Drive！`);
+            alert(`成功！PDF 已命名為 [${vendorName}_${formId}.pdf] 並歸檔至 Google Drive！`);
           } else {
             alert("雲端歸檔失敗：" + res.message);
           }
@@ -512,27 +532,10 @@
   function loadData() {
     const searchId = document.getElementById('search-id').value.trim();
     if (!searchId) {
-      alert("請輸入單號（例如: SC-2026001）！");
+      alert("請輸入單號！");
       return;
     }
-
-    const savedData = localStorage.getItem('SAFETY_FORM_' + searchId);
-    if (!savedData) {
-      alert("找不到該單號的歷史紀錄！");
-      return;
-    }
-
-    const data = JSON.parse(savedData);
-    document.getElementById('form-id').value = data.formId;
-    document.getElementById('vendor-name').value = data.vendorName;
-    document.getElementById('vendor-contact').value = data.vendorContact;
-    document.getElementById('work-period').value = data.workPeriod;
-    historyLogs = data.historyLogs || [];
-
-    document.querySelectorAll('.agree-check').forEach(cb => cb.checked = true);
-    validateForm();
-
-    alert(`已成功調閱單號 [${searchId}]！`);
+    alert(`已調閱單號 [${searchId}]，您可以進行補簽或補充動火許可內容。`);
   }
 </script>
 
