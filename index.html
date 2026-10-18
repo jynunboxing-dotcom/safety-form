@@ -82,7 +82,7 @@
   </div>
 
   <div class="search-bar no-pdf">
-    <input type="text" id="search-id" placeholder="輸入單號 (例如: SC-2026001) 調閱歷史紀錄與補簽...">
+    <input type="text" id="search-id" placeholder="輸入單號 (例如: 2026101901) 調閱歷史紀錄與補簽...">
     <button class="btn btn-secondary" onclick="loadData()">調閱舊單 / 補簽</button>
   </div>
 
@@ -203,7 +203,7 @@
       </tbody>
     </table>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" checked> [✓] 本人（承攬廠商代表）已詳閱工作場所危害因素告知單重點內容，絕對同意並遵守危害防止對策。
+      <input type="checkbox" class="agree-check"> [✓] 本人（承攬廠商代表）已詳閱工作場所危害因素告知單重點內容，絕對同意並遵守危害防止對策。
     </label>
   </div>
 
@@ -240,7 +240,7 @@
       <li>勞工作業前實施勤前教育，宣導工作環境危害因素，違反者依規定辦理。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check" checked> [✓] 乙方施工人員同意遵守上述勤前教育與危害告知內容，絕無異議。
+      <input type="checkbox" class="agree-check"> [✓] 乙方施工人員同意遵守上述勤前教育與危害告知內容，絕無異議。
     </label>
   </div>
 
@@ -320,17 +320,17 @@
           <tr>
             <td>1. 作業前檢查</td>
             <td>驗證設備完好；用防火布覆蓋周邊易燃物；清理周邊；堵住洞口縫隙；備妥2個4L滅火器；指派安全監督人員。</td>
-            <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
+            <td style="text-align:center;"><input type="checkbox"> 合格</td>
           </tr>
           <tr>
             <td>2. 施工過程中</td>
             <td>注意火花噴射範圍及墜落點；加熱物件放置於耐熱防火支撐物上；專人全程安全監督。</td>
-            <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
+            <td style="text-align:center;"><input type="checkbox"> 合格</td>
           </tr>
           <tr>
             <td>3. 當天完工後</td>
             <td>檢查作業現場及火花濺落區無殘火隱患；<strong>作業完成後保持 2 小時之嚴格監督</strong>。</td>
-            <td style="text-align:center;"><input type="checkbox" checked> 合格</td>
+            <td style="text-align:center;"><input type="checkbox"> 合格</td>
           </tr>
         </tbody>
       </table>
@@ -401,13 +401,39 @@
   let cardCounter = 0;
 
   window.onload = function() {
-    const currentYear = new Date().getFullYear();
-    const randomSeq = String(Math.floor(Math.random() * 99) + 1).padStart(3, '0');
-    document.getElementById('form-id').value = 'SC-' + currentYear + randomSeq;
+    generateNextFormId();
 
     // 預設建立第一個乙方簽名框 (施工負責人)
     addVendorSignatureCard('施工負責人');
   };
+
+  // 自動向 Google 查詢當日最新單號 (格式：YYYYMMDDNN，例如 2026101901)
+  function generateNextFormId() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}${mm}${dd}`;
+
+    document.getElementById('form-id').value = '取得單號中...';
+
+    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
+      fetch(GOOGLE_SCRIPT_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.nextFormId) {
+            document.getElementById('form-id').value = data.nextFormId;
+          } else {
+            document.getElementById('form-id').value = todayStr + '01';
+          }
+        })
+        .catch(err => {
+          document.getElementById('form-id').value = todayStr + '01';
+        });
+    } else {
+      document.getElementById('form-id').value = todayStr + '01';
+    }
+  }
 
   function toggleHotWorkSection() {
     const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
@@ -500,6 +526,14 @@
       let validSignatures = 0;
       const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
 
+      // 檢查條款是否勾選
+      const checks = document.querySelectorAll('.agree-check');
+      const allChecked = Array.from(checks).every(c => c.checked);
+      if (!allChecked) {
+        alert("請勾選第一頁與第二頁的安全條款同意核取方塊！");
+        return;
+      }
+
       // 1. 檢查乙方通用簽名
       vendorSigPads.forEach(item => {
         if (item.pad && !item.pad.isEmpty()) {
@@ -522,7 +556,7 @@
         return;
       }
 
-      // 2. 檢查動火作業簽名 (若選擇有動火)
+      // 2. 檢查動火作業簽名
       if (isHotWork) {
         if (!hwWorkerSigPad || hwWorkerSigPad.isEmpty()) {
           alert("選擇【有動火作業】時，乙方動火人員必須於第 3 頁完成手寫簽名！");
@@ -579,7 +613,7 @@
       html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
         
         document.body.classList.remove('pdf-mode');
-        
+
         // 復原乙方通用簽名畫布
         vendorSigPads.forEach(item => {
           if (item.canvas) {
@@ -627,12 +661,14 @@
           .then(res => {
             if (res.status === 'success') {
               alert(`成功！PDF 已命名為 [${vendorName}_${formId}.pdf] 並歸檔至 Google Drive！`);
+              generateNextFormId(); // 重新產生下一單單號
             } else {
               alert("雲端歸檔失敗：" + res.message);
             }
           })
           .catch(err => {
             alert(`成功！檔案 [${vendorName}_${formId}.pdf] 已下載並送出歸檔！`);
+            generateNextFormId();
           });
         } else {
           alert("PDF 已儲存至本機！");
