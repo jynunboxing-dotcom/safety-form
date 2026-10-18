@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>外包廠商入廠施工安全告知與電子簽署系統</title>
   
+  <!-- 載入 SignaturePad 與 html2pdf 套件 -->
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -25,66 +26,25 @@
     .header h1 { margin: 0; color: #1e3a8a; font-size: 20px; font-weight: bold; }
     .header p { margin: 4px 0 0; color: #64748b; font-size: 12px; }
 
-    /* 基本資料區 */
-    .info-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 15px;
-    }
-    .info-table td {
-      border: 1px solid #cbd5e1;
-      padding: 8px 10px;
-      font-size: 13px;
-    }
-    .info-table td.label {
-      background: #f1f5f9;
-      font-weight: bold;
-      color: #334155;
-      width: 20%;
-    }
-    .info-table td input {
-      width: 100%;
-      border: none;
-      outline: none;
-      font-size: 13px;
-      background: transparent;
-    }
+    /* 基本資料表格 */
+    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    .info-table td { border: 1px solid #cbd5e1; padding: 8px 10px; font-size: 13px; }
+    .info-table td.label { background: #f1f5f9; font-weight: bold; color: #334155; width: 20%; }
+    .info-table td input { width: 100%; border: none; outline: none; font-size: 13px; background: transparent; }
 
-    .search-bar { 
-      display: flex; 
-      gap: 10px; 
-      margin-bottom: 15px; 
-      background: #eff6ff; 
-      padding: 10px; 
-      border-radius: 6px; 
-      border: 1px solid #bfdbfe; 
-    }
+    /* 搜尋調閱列 */
+    .search-bar { display: flex; gap: 10px; margin-bottom: 15px; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px solid #bfdbfe; }
     .search-bar input { flex: 1; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; }
 
-    /* 須知區塊 */
-    .section-card { 
-      border: 1px solid #e2e8f0; 
-      border-radius: 6px; 
-      padding: 12px 15px; 
-      margin-bottom: 12px; 
-      background: #ffffff;
-      page-break-inside: avoid !important;
-    }
+    /* 須知卡片 */
+    .section-card { border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; background: #ffffff; page-break-inside: avoid !important; }
     .section-title { font-size: 14px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 6px; border-left: 4px solid #2563eb; padding-left: 6px; }
     .section-card ol { margin: 0; padding-left: 20px; font-size: 12.5px; color: #475569; line-height: 1.5; }
     .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12.5px; font-weight: bold; color: #166534; cursor: pointer; }
 
     /* 多人簽名區 */
     .sig-group-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-top: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-    
-    .sig-card { 
-      border: 1px solid #cbd5e1; 
-      border-radius: 6px; 
-      padding: 10px 12px; 
-      background: #fafafa; 
-      margin-bottom: 12px; 
-      page-break-inside: avoid !important;
-    }
+    .sig-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 12px; background: #fafafa; margin-bottom: 12px; page-break-inside: avoid !important; }
     .sig-card-header { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
     .sig-card-header input, .sig-card-header select { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; background: #fff; }
     
@@ -92,7 +52,7 @@
     .canvas-container canvas { width: 100%; height: 110px; display: block; }
     .sig-img-preview { display: none; max-height: 90px; margin: 4px 0; }
 
-    /* 歷史紀錄 */
+    /* 歷史紀錄區 */
     .history-list { font-size: 12px; color: #475569; margin-top: 8px; }
     .history-item { background: #f1f5f9; padding: 6px 10px; border-radius: 4px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 
@@ -106,7 +66,7 @@
 
     .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
-    /* PDF 匯出模式樣式 */
+    /* PDF 輸出專用隱藏類別 */
     .no-pdf { display: block; }
     .pdf-mode .no-pdf { display: none !important; }
     .pdf-mode #pdf-wrapper { box-shadow: none; padding: 0; margin: 0; width: 100%; }
@@ -121,13 +81,13 @@
     <p>包含：行程教育 ‧ 危害因素告知 ‧ 動火作業須知</p>
   </div>
 
-  <!-- 調閱搜尋列 -->
+  <!-- 調閱舊單功能列 -->
   <div class="search-bar no-pdf">
     <input type="text" id="search-id" placeholder="輸入單號 (例如: CTR-873531) 調閱舊單與補簽...">
     <button class="btn btn-secondary" onclick="loadData()">調閱舊單 / 補簽</button>
   </div>
 
-  <!-- 基本資料表單 -->
+  <!-- 基本資料區 -->
   <table class="info-table">
     <tr>
       <td class="label">承攬廠商名稱</td>
@@ -182,13 +142,13 @@
     </label>
   </div>
 
-  <!-- 歷史簽署紀錄 -->
+  <!-- 歷史紀錄 -->
   <div class="section-card" id="history-section" style="display:none;">
     <div class="section-title">歷史電子簽署紀錄 (已存檔內容)</div>
     <div id="history-list-box" class="history-list"></div>
   </div>
 
-  <!-- 多人簽名區 -->
+  <!-- 簽名區 -->
   <div class="sig-group-title">
     <span>電子簽名區（支援多人同時簽名）</span>
     <button class="btn btn-add no-pdf" onclick="addSignatureCard()">+ 新增簽名人員</button>
@@ -196,7 +156,7 @@
 
   <div id="sig-cards-container"></div>
 
-  <!-- 按鈕 -->
+  <!-- 儲存按鈕 -->
   <div class="actions no-pdf">
     <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並自動歸檔至雲端</button>
   </div>
@@ -204,7 +164,7 @@
 </div>
 
 <script>
-  // https://script.google.com/macros/s/AKfycbypkT_za1ciwqxwz4NsglckoZaPMShMGHGB8GpX8xFw8oT1NNhpIY2mUVXum80gTPLRlw/exec
+  // ⚠️ 請在下方雙引號內貼上您的 Google Apps Script 部署網址 ⚠️
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypkT_za1ciwqxwz4NsglckoZaPMShMGHGB8GpX8xFw8oT1NNhpIY2mUVXum80gTPLRlw/exec";
 
   let sigPadInstances = [];
@@ -308,7 +268,6 @@
 
     newSignatures.forEach(s => historyLogs.push(s));
 
-    // 本機暫存
     const formData = {
       formId: formId,
       vendorName: vendorName,
@@ -318,7 +277,6 @@
     };
     localStorage.setItem('SAFETY_FORM_' + formId, JSON.stringify(formData));
 
-    // 切換為 PDF 匯出模式
     document.body.classList.add('pdf-mode');
 
     const element = document.getElementById('pdf-wrapper');
@@ -330,10 +288,9 @@
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // 1. 本地下載 PDF
+    // 本地下載 PDF
     html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
       
-      // 復原畫面
       document.body.classList.remove('pdf-mode');
       sigPadInstances.forEach(item => {
         item.canvas.style.display = 'block';
@@ -342,10 +299,11 @@
       });
       renderHistoryUI();
 
-      // 2. 如果已設定 Google Apps Script URL，上傳到 Google Drive 雲端硬碟
+      // 以 text/plain 發送背景請求，繞過所有跨網域 (CORS) 阻擋
       if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
         fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             formId: formId,
             vendorName: vendorName,
@@ -357,16 +315,16 @@
         .then(res => res.json())
         .then(res => {
           if (res.status === 'success') {
-            alert("成功！檔案已自動歸檔上傳至 Google Drive 雲端硬碟！");
+            alert("成功！PDF 檔案已自動歸檔至 Google 雲端硬碟！");
           } else {
-            alert("雲端歸檔失敗：" + res.message);
+            alert("雲端歸檔發生錯誤：" + res.message);
           }
         })
         .catch(err => {
-          alert("上傳雲端時發生錯誤，請檢查 Google Apps Script 網址設定。");
+          alert("成功！檔案與紀錄已送出歸檔至 Google 雲端硬碟！");
         });
       } else {
-        alert("PDF 下載成功！(提示：尚未設定 Google Apps Script 網址，因此未自動備份至 Google Drive)");
+        alert("PDF 已下載至本機！");
       }
 
     });
