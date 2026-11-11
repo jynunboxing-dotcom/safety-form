@@ -13,7 +13,7 @@
     body { background-color: #f1f5f9; margin: 0; padding: 15px; color: #1e293b; }
     
     #pdf-wrapper {
-      max-width: 800px;
+      max-width: 820px;
       margin: 0 auto;
       background: #ffffff;
       padding: 25px;
@@ -21,52 +21,56 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     
-    .header { text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 15px; }
-    .header h1 { margin: 0; color: #1e3a8a; font-size: 20px; font-weight: bold; }
-    .header p { margin: 4px 0 0; color: #64748b; font-size: 12px; }
+    .header { text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 12px; margin-bottom: 18px; }
+    .header h1 { margin: 0; color: #1e3a8a; font-size: 22px; font-weight: bold; }
+    .header p { margin: 5px 0 0; color: #64748b; font-size: 13px; }
 
+    /* 基本資料表格 */
     .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
     .info-table td { border: 1px solid #cbd5e1; padding: 8px 10px; font-size: 13px; }
-    .info-table td.label { background: #f1f5f9; font-weight: bold; color: #334155; width: 22%; }
+    .info-table td.label { background: #f8fafc; font-weight: bold; color: #334155; width: 22%; }
     .info-table td input { width: 100%; border: none; outline: none; font-size: 13px; background: transparent; }
 
+    /* 搜尋調閱 */
     .search-bar { display: flex; gap: 10px; margin-bottom: 15px; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px solid #bfdbfe; }
-    .search-bar input { flex: 1; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; }
+    .search-bar input { flex: 1; padding: 8px 12px; border: 1px solid #93c5fd; border-radius: 4px; font-size: 13px; }
 
-    .section-card { border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; background: #ffffff; page-break-inside: avoid !important; }
-    .section-title { font-size: 14px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 6px; border-left: 4px solid #2563eb; padding-left: 6px; }
-    .section-card ol { margin: 0; padding-left: 20px; font-size: 12.5px; color: #475569; line-height: 1.5; }
-    .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12.5px; font-weight: bold; color: #166534; cursor: pointer; }
+    /* 須知條款區塊 */
+    .section-card { border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px 16px; margin-bottom: 14px; background: #ffffff; page-break-inside: avoid !important; }
+    .section-title { font-size: 14.5px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 8px; border-left: 4px solid #2563eb; padding-left: 8px; }
+    .section-card ol { margin: 0; padding-left: 20px; font-size: 12.5px; color: #475569; line-height: 1.6; }
+    .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 12.5px; font-weight: bold; color: #166534; cursor: pointer; }
 
+    /* 簽名板區塊 */
     .sig-group-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-top: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     
-    .sig-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 12px; background: #fafafa; margin-bottom: 12px; page-break-inside: avoid !important; }
+    .sig-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; background: #fafafa; margin-bottom: 12px; page-break-inside: avoid !important; }
     .sig-card-header { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-    .sig-card-header input, .sig-card-header select { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; background: #fff; }
+    .sig-card-header input, .sig-card-header select { padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12.5px; background: #fff; }
     
-    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 5px 0; }
+    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 6px 0; touch-action: none; }
     .canvas-container canvas { width: 100%; height: 110px; display: block; }
     .sig-img-preview { display: none; max-height: 90px; margin: 4px 0; }
 
+    /* 歷史紀錄區 */
     .history-list { font-size: 12px; color: #475569; margin-top: 8px; }
     .history-item { background: #f1f5f9; padding: 6px 10px; border-radius: 4px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 
+    /* 按鈕樣式 */
     .btn { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
     .btn-add { background: #059669; }
-    .btn-danger { background: #dc2626; color: white; padding: 3px 8px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
+    .btn-danger { background: #dc2626; color: white; padding: 4px 8px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
     .btn-secondary { background: #64748b; }
     .btn-outline { background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 4px 8px; font-size: 11px; }
     .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
     .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
+    /* PDF 匯出模式樣式 */
     .no-pdf { display: block; }
     .pdf-mode .no-pdf { display: none !important; }
     .pdf-mode #pdf-wrapper { box-shadow: none; padding: 0; margin: 0; width: 100%; }
-    
-    .pdf-mode input::placeholder {
-      color: transparent !important;
-    }
+    .pdf-mode input::placeholder { color: transparent !important; }
   </style>
 </head>
 <body>
@@ -78,18 +82,19 @@
     <p>包含：行程教育 ‧ 危害因素告知 ‧ 動火作業須知</p>
   </div>
 
+  <!-- 調閱搜尋列 -->
   <div class="search-bar no-pdf">
-    <input type="text" id="search-id" placeholder="輸入單號 (例如: CTR-873531) 調閱舊單與補簽...">
+    <input type="text" id="search-id" placeholder="輸入單號 (例如: SC-20261111-01) 調閱舊單與補簽...">
     <button class="btn btn-secondary" onclick="loadData()">調閱舊單 / 補簽</button>
   </div>
 
-  <!-- 基本資料表單（包含工程名稱、承攬廠商、日期、電話等必填項目） -->
+  <!-- 基本資料表單（工程名稱、承攬廠商、日期、電話皆為必填） -->
   <table class="info-table">
     <tr>
       <td class="label">工程名稱 <span style="color:red;">*</span></td>
       <td><input type="text" id="project-name" placeholder="請輸入工程名稱" oninput="validateForm()"></td>
       <td class="label">入廠施工單號</td>
-      <td><input type="text" id="form-id" readonly style="font-weight:bold;"></td>
+      <td><input type="text" id="form-id" readonly style="font-weight:bold; background:#f8fafc;"></td>
     </tr>
     <tr>
       <td class="label">承攬廠商 <span style="color:red;">*</span></td>
@@ -103,47 +108,55 @@
     </tr>
   </table>
 
+  <!-- 須知一：行程教育 -->
   <div class="section-card">
     <div class="section-title">第一部分：廠商行程與安全教育須知</div>
     <ol>
-      <li>所有入廠人員必須全程配戴臨時工作證與指定安全防護具（安全帽、安全鞋）。</li>
-      <li>嚴禁攜帶違禁品、酒類或未申報之危險化學品進入廠區。</li>
-      <li>施工人員僅限於指定作業區域活動，嚴禁擅自進入未授權之管制區。</li>
+      <li>所有入廠作業人員必須全程依規定配戴臨時工作證與標準安全防護具（安全帽、安全鞋、反光背心等）。</li>
+      <li>嚴禁攜帶違禁品、酒精性飲料或未經報備審查之危險性化學品進入廠區。</li>
+      <li>施工人員活動範圍僅限於申請核可之作業區域，嚴禁擅自跨越進入未授權之管制區或機房。</li>
+      <li>每日進場前須向廠區監工或安衛窗口完成點名報到，作業完畢後應完成現場清理並辦理退場手續。</li>
     </ol>
     <label class="checkbox-label">
       <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並同意遵照上述「行程教育須知」
     </label>
   </div>
 
+  <!-- 須知二：危害因素告知 -->
   <div class="section-card">
     <div class="section-title">第二部分：施工區域危害因素告知</div>
     <ol>
-      <li>局限空間危害：未經氣體檢測合格前，嚴禁人員進入局限空間作業。</li>
-      <li>墜落危害：高度達 2 公尺以上作業，必須全程勾掛安全帶並設置合格鷹架。</li>
-      <li>感電危害：臨時用電設施須裝設漏電斷路器，嚴禁使用破損電線工具。</li>
+      <li><strong>墜落危害：</strong>凡於高度達 2 公尺以上之高處作業，必須全程確實勾掛雙大勾背負式安全帶，並設置合格之施工架、安全母索或防墜網。</li>
+      <li><strong>感電危害：</strong>臨時用電設備須符合防爆防漏電規範，嚴禁私自接駁總電源；所有插座及延長線路均須設置合格之漏電斷路器，破損電線一律禁止使用。</li>
+      <li><strong>局限空間危害：</strong>進入儲槽、地下管線、人孔等局限空間前，必須確實完成通風換氣，並實施氧氣及可燃/有害氣體連續監測合格，且嚴禁人員單獨進入作業。</li>
+      <li><strong>物體飛落與碰撞：</strong>吊掛或上下交叉作業區域，下方應劃設警戒繩管制人員進入，作業人員嚴禁於吊舉物下方停留或行走。</li>
     </ol>
     <label class="checkbox-label">
       <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並知悉「施工危害因素告知」內容
     </label>
   </div>
 
+  <!-- 須知三：動火作業須知 -->
   <div class="section-card">
     <div class="section-title">第三部分：動火作業安全須知</div>
     <ol>
-      <li>動火作業（焊接、切割、打磨等）周圍 10 公尺內必須清理易燃物。</li>
-      <li>動火現場必須備妥合格之滅火器，並指派專責監火人全程監護。</li>
-      <li>作業結束後，監火人與負責人須於現場觀察至少 30 分鐘，確認無殘火。</li>
+      <li>凡進行電焊、氣焊、乙炔切割、砂輪打磨等會產生火花或高熱之作業，作業前必須依法取得動火作業許可證。</li>
+      <li>動火點半徑 10 公尺範圍內之所有易燃物、化學品及地面開口均須徹底清理、覆蓋防火毯或施以妥善隔離防護。</li>
+      <li>動火作業現場必須就近配置至少 2 具檢驗合格之乾粉滅火器，並指派專責「監火人」全程在場監護。</li>
+      <li>作業結束後，監火人與施工負責人必須留於現場持續觀察巡檢至少 30 分鐘以上，確認完全無暗火與殘留熱源後方得離開。</li>
     </ol>
     <label class="checkbox-label">
       <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並承諾落實「動火作業須知」
     </label>
   </div>
 
+  <!-- 歷史簽署紀錄 (調閱時呈現) -->
   <div class="section-card" id="history-section" style="display:none;">
     <div class="section-title">歷史電子簽署紀錄 (已存檔內容)</div>
     <div id="history-list-box" class="history-list"></div>
   </div>
 
+  <!-- 多人簽名區 -->
   <div class="sig-group-title">
     <span>電子簽名區（支援多人同時簽名）</span>
     <button class="btn btn-add no-pdf" onclick="addSignatureCard()">+ 新增簽名人員</button>
@@ -151,6 +164,7 @@
 
   <div id="sig-cards-container"></div>
 
+  <!-- 操作按鈕 -->
   <div class="actions no-pdf">
     <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並下載 PDF 歸檔</button>
   </div>
@@ -166,8 +180,30 @@
   let cardCounter = 0;
 
   window.onload = function() {
-    document.getElementById('form-id').value = 'CTR-' + Math.floor(100000 + Math.random() * 900000);
-    document.getElementById('work-date').valueAsDate = new Date();
+    const today = new Date();
+    document.getElementById('work-date').valueAsDate = today;
+
+    // 依年月日 (YYYYMMDD) 與當日順序 (01, 02...) 自動編號
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const dateStr = `${yyyy}${mm}${dd}`;
+
+    const lastDate = localStorage.getItem('SAFETY_FORM_LAST_DATE');
+    let seq = parseInt(localStorage.getItem('SAFETY_FORM_DAILY_SEQ') || '0', 10);
+
+    if (lastDate === dateStr) {
+      seq += 1;
+    } else {
+      seq = 1;
+    }
+
+    localStorage.setItem('SAFETY_FORM_LAST_DATE', dateStr);
+    localStorage.setItem('SAFETY_FORM_DAILY_SEQ', seq);
+
+    const seqStr = String(seq).padStart(2, '0');
+    document.getElementById('form-id').value = `SC-${dateStr}-${seqStr}`;
+
     addSignatureCard('施工負責人');
     validateForm();
   };
@@ -226,7 +262,7 @@
     if (item) item.pad.clear();
   }
 
-  // 必填驗證邏輯：工程名稱、承攬廠商、預定施作日期、電話皆必填，且三項須知需全勾
+  // 必填檢查邏輯
   function validateForm() {
     const checks = document.querySelectorAll('.agree-check');
     const allChecked = Array.from(checks).every(c => c.checked);
@@ -309,6 +345,7 @@
 
     document.body.classList.add('pdf-mode');
 
+    // 清除 placeholder 避免被轉進 PDF 產生灰字浮水印
     const inputs = document.querySelectorAll('#pdf-wrapper input');
     const placeholders = [];
     inputs.forEach((inp, idx) => {
@@ -318,7 +355,7 @@
 
     const element = document.getElementById('pdf-wrapper');
     const opt = {
-      margin:       [5, 5, 5, 5],
+      margin:       [6, 6, 6, 6],
       filename:     `施工安全告知書_${projectName}_${vendorName}_${formId}.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
