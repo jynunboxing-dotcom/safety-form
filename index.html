@@ -3,487 +3,193 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>承攬作業危害因素告知與電子簽署系統</title>
+  <title>外包廠商入廠施工安全告知與電子簽署系統</title>
   
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     * { box-sizing: border-box; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; }
-    body { background-color: #f1f5f9; margin: 0; padding: 15px; color: #0f172a; }
+    body { background-color: #f1f5f9; margin: 0; padding: 15px; color: #1e293b; }
     
     #pdf-wrapper {
-      max-width: 820px;
+      max-width: 800px;
       margin: 0 auto;
       background: #ffffff;
-      padding: 20px 25px;
+      padding: 25px;
       border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     
-    .header { text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 8px; margin-bottom: 12px; }
-    .header h1 { margin: 0; color: #1e3a8a; font-size: 19px; font-weight: bold; }
-    .header p { margin: 3px 0 0; color: #475569; font-size: 11px; }
+    .header { text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 15px; }
+    .header h1 { margin: 0; color: #1e3a8a; font-size: 20px; font-weight: bold; }
+    .header p { margin: 4px 0 0; color: #64748b; font-size: 12px; }
 
-    /* 表格樣式 */
-    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 11.5px; }
-    .info-table td { border: 1px solid #94a3b8; padding: 5px 8px; }
-    .info-table td.label { background: #f1f5f9; font-weight: bold; color: #1e293b; width: 18%; text-align: right; }
-    .info-table input, .info-table select { width: 100%; border: none; outline: none; font-size: 11.5px; background: transparent; }
+    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    .info-table td { border: 1px solid #cbd5e1; padding: 8px 10px; font-size: 13px; }
+    .info-table td.label { background: #f1f5f9; font-weight: bold; color: #334155; width: 22%; }
+    .info-table td input { width: 100%; border: none; outline: none; font-size: 13px; background: transparent; }
 
-    .search-bar { display: flex; gap: 8px; margin-bottom: 12px; background: #eff6ff; padding: 8px; border-radius: 6px; border: 1px solid #bfdbfe; }
-    .search-bar input { flex: 1; padding: 6px; border: 1px solid #93c5fd; border-radius: 4px; font-size: 12px; }
+    .search-bar { display: flex; gap: 10px; margin-bottom: 15px; background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px solid #bfdbfe; }
+    .search-bar input { flex: 1; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; }
 
-    .section-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; background: #ffffff; }
-    .section-title { font-size: 13.5px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 6px; border-left: 4px solid #2563eb; padding-left: 6px; }
+    .section-card { border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; background: #ffffff; page-break-inside: avoid !important; }
+    .section-title { font-size: 14px; font-weight: bold; color: #1e3a8a; margin-top: 0; margin-bottom: 6px; border-left: 4px solid #2563eb; padding-left: 6px; }
+    .section-card ol { margin: 0; padding-left: 20px; font-size: 12.5px; color: #475569; line-height: 1.5; }
+    .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12.5px; font-weight: bold; color: #166534; cursor: pointer; }
+
+    .sig-group-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-top: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     
-    .rule-list { margin: 0; padding-left: 18px; font-size: 11px; color: #334155; line-height: 1.45; }
-    .rule-list li { margin-bottom: 3px; }
+    .sig-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 12px; background: #fafafa; margin-bottom: 12px; page-break-inside: avoid !important; }
+    .sig-card-header { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .sig-card-header input, .sig-card-header select { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; background: #fff; }
     
-    .hazard-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 10.5px; }
-    .hazard-table th, .hazard-table td { border: 1px solid #cbd5e1; padding: 4px 6px; text-align: left; }
-    .hazard-table th { background: #f8fafc; color: #1e3a8a; }
+    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 5px 0; }
+    .canvas-container canvas { width: 100%; height: 110px; display: block; }
+    .sig-img-preview { display: none; max-height: 90px; margin: 4px 0; }
 
-    .checkbox-label { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 11.5px; font-weight: bold; color: #166534; cursor: pointer; }
-
-    /* 簽名板區域 */
-    .sig-group-title { font-size: 13.5px; font-weight: bold; color: #0f172a; margin-top: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-    .sig-card { border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; background: #fafafa; margin-bottom: 8px; }
-    .sig-card-header { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
-    .sig-card-header input, .sig-card-header select { padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; background: #fff; }
-    
-    .canvas-container { border: 1.5px dashed #94a3b8; background: #fff; border-radius: 4px; margin: 4px 0; position: relative; min-height: 90px; }
-    .canvas-container canvas { width: 100%; height: 90px; display: block; touch-action: none; }
-    .sig-img-preview { display: none; max-height: 70px; margin: 2px 0; }
-
-    .page-break { page-break-before: always !important; break-before: page !important; margin-top: 15px; }
+    .history-list { font-size: 12px; color: #475569; margin-top: 8px; }
+    .history-item { background: #f1f5f9; padding: 6px 10px; border-radius: 4px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 
     .btn { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
     .btn-add { background: #059669; }
-    .btn-danger { background: #dc2626; color: white; padding: 2px 6px; font-size: 10px; border-radius: 4px; border: none; cursor: pointer; }
+    .btn-danger { background: #dc2626; color: white; padding: 3px 8px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
     .btn-secondary { background: #64748b; }
-    .btn-outline { background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 3px 6px; font-size: 10.5px; }
+    .btn-outline { background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 4px 8px; font-size: 11px; }
+    .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-    .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; }
+    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
     .no-pdf { display: block; }
     .pdf-mode .no-pdf { display: none !important; }
     .pdf-mode #pdf-wrapper { box-shadow: none; padding: 0; margin: 0; width: 100%; }
+    
+    .pdf-mode input::placeholder {
+      color: transparent !important;
+    }
   </style>
 </head>
 <body>
 
 <div id="pdf-wrapper">
   
-  <!-- ==================== 第一頁：承攬作業危害因素告知單 ==================== -->
   <div class="header">
-    <h1>承攬作業危害因素告知單</h1>
-    <p>依照《職業安全衛生法》及其相關法規辦理</p>
+    <h1>外包廠商入廠施工安全告知與簽署紀錄表</h1>
+    <p>包含：行程教育 ‧ 危害因素告知 ‧ 動火作業須知</p>
   </div>
 
   <div class="search-bar no-pdf">
-    <input type="text" id="search-id" placeholder="輸入單號 (例如: 2026101901) 調閱歷史紀錄與補簽...">
+    <input type="text" id="search-id" placeholder="輸入單號 (例如: CTR-873531) 調閱舊單與補簽...">
     <button class="btn btn-secondary" onclick="loadData()">調閱舊單 / 補簽</button>
   </div>
 
+  <!-- 基本資料表單（包含工程名稱、承攬廠商、日期、電話等必填項目） -->
   <table class="info-table">
     <tr>
-      <td class="label">工程名稱</td>
-      <td colspan="3"><input type="text" id="project-name" placeholder="例如：三重店空調設備維護改善工程"></td>
+      <td class="label">工程名稱 <span style="color:red;">*</span></td>
+      <td><input type="text" id="project-name" placeholder="請輸入工程名稱" oninput="validateForm()"></td>
+      <td class="label">入廠施工單號</td>
+      <td><input type="text" id="form-id" readonly style="font-weight:bold;"></td>
     </tr>
     <tr>
-      <td class="label">承攬廠商</td>
-      <td><input type="text" id="vendor-name" placeholder="例如：鉅豐消防工程有限公司"></td>
-      <td class="label">施工單號</td>
-      <td><input type="text" id="form-id" readonly style="font-weight:bold; color:#1e3a8a;"></td>
+      <td class="label">承攬廠商 <span style="color:red;">*</span></td>
+      <td><input type="text" id="vendor-name" placeholder="請輸入承攬廠商" oninput="validateForm()"></td>
+      <td class="label">預定施作日期 <span style="color:red;">*</span></td>
+      <td><input type="date" id="work-date" onchange="validateForm()"></td>
     </tr>
     <tr>
-      <td class="label">預定施工期間</td>
-      <td><input type="text" id="work-period" placeholder="2026/10/20 ~ 2026/10/25"></td>
-      <td class="label">廠商聯絡人/電話</td>
-      <td><input type="text" id="vendor-contact" placeholder="陳大明 0912-345678"></td>
-    </tr>
-    <tr>
-      <td class="label">協力廠商數量</td>
-      <td><input type="text" id="sub-vendor-count" placeholder="0"></td>
-      <td class="label">總僱用勞工人數</td>
-      <td><input type="text" id="total-workers" placeholder="5"></td>
-    </tr>
-    <tr>
-      <td class="label">工作場所負責人</td>
-      <td><input type="text" id="site-manager" placeholder="廠商現場負責人姓名"></td>
-      <td class="label">安衛管理人員</td>
-      <td><input type="text" id="safety-manager" placeholder="廠商安衛人員姓名"></td>
+      <td class="label">聯絡電話 <span style="color:red;">*</span></td>
+      <td colspan="3"><input type="tel" id="vendor-phone" placeholder="請輸入聯絡電話" oninput="validateForm()"></td>
     </tr>
   </table>
 
   <div class="section-card">
-    <div class="section-title">基本遵守事項</div>
-    <ol class="rule-list">
-      <li>進入工區配戴安全帽並佩掛識別證，非施工人員嚴禁進入工區。</li>
-      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施（鷹架、長條型防墜網、中欄杆）。</li>
-      <li>工區內臨時用電掛名牌，電線一律高架，電源限接二次側，使用標準插頭及電纜線並裝設高速型漏電斷路器。</li>
-      <li>工區內安衛措施嚴禁拆除，並與工班宣導隨手做安衛觀念。</li>
-      <li>各工種施工時，須有安衛主管或專人於旁管理。電焊作業需有防止電擊裝置。</li>
-      <li>承商確實巡查工區安衛，並將缺失確實回報，確保生命財產安全。</li>
+    <div class="section-title">第一部分：廠商行程與安全教育須知</div>
+    <ol>
+      <li>所有入廠人員必須全程配戴臨時工作證與指定安全防護具（安全帽、安全鞋）。</li>
+      <li>嚴禁攜帶違禁品、酒類或未申報之危險化學品進入廠區。</li>
+      <li>施工人員僅限於指定作業區域活動，嚴禁擅自進入未授權之管制區。</li>
     </ol>
-  </div>
-
-  <div class="section-card">
-    <div class="section-title">作業項目、危害因素與防止對策總表 (14項重點分類)</div>
-    <table class="hazard-table">
-      <thead>
-        <tr>
-          <th style="width: 20%;">作業項目</th>
-          <th style="width: 22%;">可能危害因素</th>
-          <th>危害防止對策 (摘要)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>一、拆除作業</td>
-          <td>崩塌、物料掉落、粉塵</td>
-          <td>設圍籬及隔離裝置；隨時灑水降塵；不穩定結構固定支撐；廢料堆置高≤2米；嚴禁上下交叉作業。</td>
-        </tr>
-        <tr>
-          <td>二、車輛/大型機具作業</td>
-          <td>交通意外、物料掉落、感電</td>
-          <td>設交通指揮員；起重機及操作手、吊掛手需持合格證照；吊物下方嚴禁人進入；電盤裝高速型漏電斷路器。</td>
-        </tr>
-        <tr>
-          <td>三、高空吊裝、組立</td>
-          <td>墜落、翻倒、觸電</td>
-          <td>安裝防墜網；強制佩戴三點式安全帶及掛安全母索；防滑舌片正常；構件安裝穩固方可鬆放。</td>
-        </tr>
-        <tr>
-          <td>四、裝卸物品</td>
-          <td>崩塌、物料掉落、割傷</td>
-          <td>高處作業設置擋板捆綁；嚴禁下拋物品；禁止由吊舉物下方通過；易碎品搬運小心謹慎。</td>
-        </tr>
-        <tr>
-          <td>五、高空作業 (≥2M)</td>
-          <td>墜(滾)落、物料掉落、感電</td>
-          <td>開口設護欄或護蓋；嚴禁於施工架上使用合梯；嚴禁酒後或身體不適者作業；高差1.5米以上設安全上下設備。</td>
-        </tr>
-        <tr>
-          <td>六、焊接、動火作業</td>
-          <td>感電、爆炸、中毒、火災</td>
-          <td>交流電焊機裝自動電擊防止裝置；佩帶絕緣具；2米內備滅火器並鋪防火毯；鋼瓶垂直固定分開儲存。</td>
-        </tr>
-        <tr>
-          <td>七、局限空間作業</td>
-          <td>缺氧、中毒、可燃氣體</td>
-          <td>作業前檢查有害/可燃氣體；實施機械強制通風；佩帶呼吸防護具與防護索；每2小時記錄氣體濃度。</td>
-        </tr>
-        <tr>
-          <td>八、環境清潔消毒</td>
-          <td>有害物接觸</td>
-          <td>穿全套個人防護裝備(防毒面具、長統膠鞋)；完畢立即沐浴更衣；回收藥瓶。</td>
-        </tr>
-        <tr>
-          <td>九、裝修塗裝作業</td>
-          <td>墜落、中毒、缺氧、感電</td>
-          <td>移動式施工架符指引；電動工具接接地線；嚴禁施工架上使用合梯；保持通風防爆。</td>
-        </tr>
-        <tr>
-          <td>十、跌倒與工作環境</td>
-          <td>突出物、落差、滑溜</td>
-          <td>突出物移走或標示防範；落差處設防護；建材排放整齊不占用通道；地面保持平坦。</td>
-        </tr>
-        <tr>
-          <td>十一、電氣作業</td>
-          <td>感電、觸電</td>
-          <td>高壓設備由專業人員引導；電路裝置漏電斷路器；電線架高加掛標示。</td>
-        </tr>
-        <tr>
-          <td>十二、物體飛落與機械</td>
-          <td>飛落傷人、夾捲切擦傷</td>
-          <td>搬運捆牢並派人指揮；除草機操作穿護衣帽；圓鋸機研磨機嚴禁拆護罩；傳動件設護欄。</td>
-        </tr>
-      </tbody>
-    </table>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check"> [✓] 本人（承攬廠商代表）已詳閱工作場所危害因素告知單重點內容，絕對同意並遵守危害防止對策。
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並同意遵照上述「行程教育須知」
     </label>
   </div>
 
-
-  <!-- ==================== 第二頁：勤前教育記錄與乙方簽名 ==================== -->
-  <div class="page-break"></div>
-
-  <div class="header">
-    <h1>一般作業勞工勤前教育記錄 (工具箱會議)</h1>
-    <p>勞工安全切結暨危害告知宣導記錄</p>
-  </div>
-
   <div class="section-card">
-    <div class="section-title">遵守內容簡述 (19項宣導重點)</div>
-    <ol class="rule-list">
-      <li>進入工區戴安全帽並佩掛識別證，非施工人員嚴禁進入工區。</li>
-      <li>高空作業繫安全帶，嚴禁於架上置料及拆除相關安衛措施（鷹架、長條型防墜網、中欄杆）。</li>
-      <li><strong>上班前、工作中禁止飲用含有酒精性飲料（包括啤酒、維士比、保力達等）。</strong></li>
-      <li>動火作業（例：氧氣乙炔、切割機、電焊機等）施作時須指派專人監督；設置有效滅火器、移開易燃物、鋪設防火毯；完工後自主檢查確認無火花並知會安衛人員複檢。</li>
-      <li>使用電器設備應裝設漏電斷路器、合格電纜線、插座，電線應架高，嚴禁裸線插接。</li>
-      <li>使用移動式施工架須設置上下設備及護欄並符合法規規定。</li>
-      <li>從事有害作業勞工須使用合格個人防護用具（口罩、手套、護目鏡等）。</li>
-      <li>從事吊掛作業須具合格證照之操作與指揮人員，嚴禁人員進入吊舉物下方，設置警示帶。</li>
-      <li>勞工於高差 1.5 公尺以上場所作業應使用安全上下設備。</li>
-      <li>氧氣、乙炔鋼瓶應綁紮固定分開儲存，儲存處禁止煙火。使用中鋼瓶應裝設防迴火逆止閥及滅火器。</li>
-      <li>未能設置護欄之作業面應先拉設安全母索，確認安全無虞始可作業。</li>
-      <li>自然換氣不良場所應採取通風措施並測定作業環境，缺氧作業主管需在場監督。</li>
-      <li>作業時不得任意破壞現場安全防護設施或使其失效。</li>
-      <li>合梯使用規定：①具堅固構造 ②無顯著損傷腐蝕 ③寬度≥30公分 ④梯腳角度75°以內且有繫材扣牢 ⑤有安全梯面。</li>
-      <li>施工現場嚴禁吸菸，吸菸請至指定場所。</li>
-      <li><strong>嚴禁吵架、打架、恐嚇、賭博等違法事件，違者立即驅離並嚴懲相關廠商。</strong></li>
-      <li>作業時作業主管或安衛人員應在場監督。</li>
-      <li>施工作業時應先劃定施工範圍區域，防止閒雜人員靠近。</li>
-      <li>勞工作業前實施勤前教育，宣導工作環境危害因素，違反者依規定辦理。</li>
+    <div class="section-title">第二部分：施工區域危害因素告知</div>
+    <ol>
+      <li>局限空間危害：未經氣體檢測合格前，嚴禁人員進入局限空間作業。</li>
+      <li>墜落危害：高度達 2 公尺以上作業，必須全程勾掛安全帶並設置合格鷹架。</li>
+      <li>感電危害：臨時用電設施須裝設漏電斷路器，嚴禁使用破損電線工具。</li>
     </ol>
     <label class="checkbox-label">
-      <input type="checkbox" class="agree-check"> [✓] 乙方施工人員同意遵守上述勤前教育與危害告知內容，絕無異議。
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並知悉「施工危害因素告知」內容
     </label>
   </div>
 
-  <!-- 本次是否有動火作業選擇 -->
-  <div class="section-card no-pdf" style="background:#f0fdf4; border-color:#86efac;">
-    <div class="section-title" style="color:#166534;">🔥 本次施工是否有「動火作業」？（如：焊接、切割、打磨等）</div>
-    <div style="display:flex; gap:20px; font-size:12.5px; font-weight:bold; margin-top:5px;">
-      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="no" checked onchange="toggleHotWorkSection()"> 否，無動火作業 (無需甲方簽名)</label>
-      <label style="cursor:pointer;"><input type="radio" name="has-hotwork" value="yes" onchange="toggleHotWorkSection()"> 是，有動火作業 (開啟第 3 頁用火許可與動火簽名)</label>
-    </div>
+  <div class="section-card">
+    <div class="section-title">第三部分：動火作業安全須知</div>
+    <ol>
+      <li>動火作業（焊接、切割、打磨等）周圍 10 公尺內必須清理易燃物。</li>
+      <li>動火現場必須備妥合格之滅火器，並指派專責監火人全程監護。</li>
+      <li>作業結束後，監火人與負責人須於現場觀察至少 30 分鐘，確認無殘火。</li>
+    </ol>
+    <label class="checkbox-label">
+      <input type="checkbox" class="agree-check" onchange="validateForm()"> [✓] 本人已完全理解並承諾落實「動火作業須知」
+    </label>
   </div>
 
-  <!-- 乙方廠商簽名區 -->
+  <div class="section-card" id="history-section" style="display:none;">
+    <div class="section-title">歷史電子簽署紀錄 (已存檔內容)</div>
+    <div id="history-list-box" class="history-list"></div>
+  </div>
+
   <div class="sig-group-title">
-    <span>乙方廠商電子簽名區（施工負責人與作業人員）</span>
-    <button class="btn btn-add no-pdf" onclick="addVendorSignatureCard('作業人員')">+ 新增作業人員</button>
+    <span>電子簽名區（支援多人同時簽名）</span>
+    <button class="btn btn-add no-pdf" onclick="addSignatureCard()">+ 新增簽名人員</button>
   </div>
 
-  <div id="vendor-sig-cards-container"></div>
+  <div id="sig-cards-container"></div>
 
-
-  <!-- ==================== 第三頁：公司內部用火許可證 (有動火才顯示) ==================== -->
-  <div id="hotwork-section" style="display: none;">
-    <div class="page-break"></div>
-
-    <div class="header">
-      <h1>公司內部用火許可證 (Hot Work Permit)</h1>
-      <p>迪卡儂及總體工程代理負責人強制安全規則 (有效期 24H)</p>
-    </div>
-
-    <table class="info-table">
-      <tr>
-        <td class="label">工程名稱/目的</td>
-        <td colspan="3"><input type="text" id="hw-purpose" placeholder="例如：金屬管道焊接與切割打磨"></td>
-      </tr>
-      <tr>
-        <td class="label">具體施工位置</td>
-        <td><input type="text" id="hw-location" placeholder="例如：1F 後方機房區域"></td>
-        <td class="label">已知風險標明</td>
-        <td><input type="text" id="hw-risk" placeholder="特殊貨物、隱蔽電線、瓦斯鋼瓶等..."></td>
-      </tr>
-      <tr>
-        <td class="label">現場防護措施</td>
-        <td colspan="3"><input type="text" id="hw-safety-measure" placeholder="已用防火帆布覆蓋易燃物、配帶防護面罩、備滅火器"></td>
-      </tr>
-      <tr>
-        <td class="label">消防噴淋系統可用</td>
-        <td>
-          <select id="hw-sprinkler"><option value="是">是</option><option value="否">否</option></select>
-        </td>
-        <td class="label">消防栓展開有水</td>
-        <td>
-          <select id="hw-hydrant"><option value="是">是</option><option value="否">否</option></select>
-        </td>
-      </tr>
-      <tr>
-        <td class="label">滅火器數量/型號</td>
-        <td colspan="3"><input type="text" id="hw-extinguisher" placeholder="2 支 4L 乾粉滅火器，壓力正常"></td>
-      </tr>
-      <tr>
-        <td class="label">緊急聯繫電話</td>
-        <td colspan="3"><input type="text" id="hw-emergency-phone" placeholder="值班經理/安衛主管電話"></td>
-      </tr>
-    </table>
-
-    <div class="section-card">
-      <div class="section-title">用火安全三階段檢核表</div>
-      <table class="hazard-table">
-        <thead>
-          <tr>
-            <th style="width: 22%;">階段</th>
-            <th>強制檢查項目與標準</th>
-            <th style="width: 15%; text-align:center;">檢查結果</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1. 作業前檢查</td>
-            <td>驗證設備完好；用防火布覆蓋周邊易燃物；清理周邊；堵住洞口縫隙；備妥2個4L滅火器；指派安全監督人員。</td>
-            <td style="text-align:center;"><input type="checkbox"> 合格</td>
-          </tr>
-          <tr>
-            <td>2. 施工過程中</td>
-            <td>注意火花噴射範圍及墜落點；加熱物件放置於耐熱防火支撐物上；專人全程安全監督。</td>
-            <td style="text-align:center;"><input type="checkbox"> 合格</td>
-          </tr>
-          <tr>
-            <td>3. 當天完工後</td>
-            <td>檢查作業現場及火花濺落區無殘火隱患；<strong>作業完成後保持 2 小時之嚴格監督</strong>。</td>
-            <td style="text-align:center;"><input type="checkbox"> 合格</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 動火作業：雙方簽核區 -->
-    <div class="sig-group-title" style="color:#1e3a8a;">
-      <span>動火作業專屬簽核區 (乙方動火人員 + 甲方主管審批)</span>
-    </div>
-
-    <!-- 乙方動火操作人員 -->
-    <div class="sig-card">
-      <div class="sig-card-header">
-        <span style="font-size:12px; font-weight:bold; color:#166534;">乙方角色：</span>
-        <select id="hw-worker-role">
-          <option value="動火操作人員">乙方 動火操作人員</option>
-          <option value="現場防護監督人">乙方 現場防護監督人</option>
-        </select>
-        <input type="text" id="hw-worker-name" placeholder="乙方動火人員姓名" style="flex:1;">
-      </div>
-      <div class="canvas-container">
-        <canvas id="canvas-hw-worker"></canvas>
-        <img id="img-hw-worker" class="sig-img-preview" alt="乙方動火簽名檔">
-      </div>
-      <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
-        <button class="btn btn-outline" onclick="if(hwWorkerSigPad) hwWorkerSigPad.clear()">清除重簽</button>
-        <span style="font-size: 10px; color: #94a3b8;">請乙方動火人員在此處手寫簽名</span>
-      </div>
-    </div>
-
-    <!-- 甲方 / 迪卡儂審批簽名 -->
-    <div class="sig-card">
-      <div class="sig-card-header">
-        <span style="font-size:12px; font-weight:bold; color:#1e3a8a;">甲方審批：</span>
-        <select id="owner-role">
-          <option value="值班經理">迪卡儂 值班經理</option>
-          <option value="安全營運經理">迪卡儂 安全營運經理</option>
-          <option value="工程主管">迪卡儂 工程主管</option>
-        </select>
-        <input type="text" id="owner-name" placeholder="甲方審批人姓名" style="flex:1;">
-      </div>
-      <div class="canvas-container">
-        <canvas id="canvas-owner"></canvas>
-        <img id="img-owner" class="sig-img-preview" alt="甲方簽名檔">
-      </div>
-      <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
-        <button class="btn btn-outline" onclick="if(ownerSigPad) ownerSigPad.clear()">清除重簽</button>
-        <span style="font-size: 10px; color: #94a3b8;">請甲方主管在此處完成審批簽名</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- 操作按鈕 -->
   <div class="actions no-pdf">
-    <button class="btn" id="save-btn" onclick="saveDataAndExportPDF()">儲存並自動歸檔至 Google Drive</button>
+    <button class="btn" id="save-btn" disabled onclick="saveDataAndExportPDF()">儲存並下載 PDF 歸檔</button>
   </div>
 
 </div>
 
 <script>
-  // ⚠️ 請在此處雙引號內貼上您的 Google Apps Script 部署網址 ⚠️
+  // ⚠️ 請填入您的 Google Apps Script 部署網址 ⚠️
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiSrYT48bt3LcyBc_R1WCzAE1QShaIH_8PdccvesR6C77h3CACQSNSJAveRN0mNVL7/exec";
 
-  let vendorSigPads = [];
-  let hwWorkerSigPad = null;
-  let ownerSigPad = null;
+  let sigPadInstances = [];
+  let historyLogs = [];
   let cardCounter = 0;
 
   window.onload = function() {
-    generateNextFormId();
-
-    // 預設建立第一個乙方簽名框 (施工負責人)
-    addVendorSignatureCard('施工負責人');
+    document.getElementById('form-id').value = 'CTR-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('work-date').valueAsDate = new Date();
+    addSignatureCard('施工負責人');
+    validateForm();
   };
 
-  // 自動向 Google 查詢當日最新單號 (格式：YYYYMMDDNN，例如 2026101901)
-  function generateNextFormId() {
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const dd = String(now.getDate()).padStart(2, '0');
-    const todayStr = `${yyyy}${mm}${dd}`;
-
-    document.getElementById('form-id').value = '取得單號中...';
-
-    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
-      fetch(GOOGLE_SCRIPT_URL)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.nextFormId) {
-            document.getElementById('form-id').value = data.nextFormId;
-          } else {
-            document.getElementById('form-id').value = todayStr + '01';
-          }
-        })
-        .catch(err => {
-          document.getElementById('form-id').value = todayStr + '01';
-        });
-    } else {
-      document.getElementById('form-id').value = todayStr + '01';
-    }
-  }
-
-  function toggleHotWorkSection() {
-    const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
-    const section = document.getElementById('hotwork-section');
-    section.style.display = isHotWork ? 'block' : 'none';
-    
-    if (isHotWork) {
-      setTimeout(() => {
-        initHotWorkPads();
-      }, 150);
-    }
-  }
-
-  function initHotWorkPads() {
-    const cWorker = document.getElementById('canvas-hw-worker');
-    const cOwner = document.getElementById('canvas-owner');
-
-    if (cWorker) {
-      cWorker.width = cWorker.parentElement ? cWorker.parentElement.clientWidth : 650;
-      cWorker.height = 90;
-      if (!hwWorkerSigPad) {
-        hwWorkerSigPad = new SignaturePad(cWorker, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
-      }
-    }
-
-    if (cOwner) {
-      cOwner.width = cOwner.parentElement ? cOwner.parentElement.clientWidth : 650;
-      cOwner.height = 90;
-      if (!ownerSigPad) {
-        ownerSigPad = new SignaturePad(cOwner, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
-      }
-    }
-  }
-
-  function addVendorSignatureCard(defaultRole = '作業人員') {
+  function addSignatureCard(defaultRole = '') {
     cardCounter++;
-    const cardId = 'vendor-sig-card-' + cardCounter;
-    const canvasId = 'canvas-vendor-' + cardCounter;
-    const imgId = 'img-vendor-' + cardCounter;
+    const cardId = 'sig-card-' + cardCounter;
+    const canvasId = 'canvas-' + cardCounter;
+    const imgId = 'img-' + cardCounter;
 
-    const container = document.getElementById('vendor-sig-cards-container');
+    const container = document.getElementById('sig-cards-container');
     const cardHtml = `
       <div class="sig-card" id="${cardId}">
         <div class="sig-card-header">
-          <select id="vendor-role-${cardCounter}">
-            <option value="施工負責人" ${defaultRole==='施工負責人'?'selected':''}>乙方 施工負責人</option>
-            <option value="作業人員" ${defaultRole==='作業人員'?'selected':''}>乙方 作業人員</option>
+          <select id="role-${cardCounter}">
+            <option value="施工負責人" ${defaultRole==='施工負責人'?'selected':''}>施工負責人</option>
+            <option value="作業人員" ${defaultRole==='作業人員'?'selected':''}>作業人員</option>
+            <option value="廠區監工/安衛" ${defaultRole==='廠區監工/安衛'?'selected':''}>廠區監工 / 安衛人員</option>
+            <option value="追加/二次補簽" ${defaultRole==='追加/二次補簽'?'selected':''}>追加 / 二次補簽</option>
           </select>
-          <input type="text" id="vendor-name-${cardCounter}" placeholder="簽署人姓名 (例如: 王大明)" style="flex:1;">
-          ${cardCounter > 1 ? `<button class="btn-danger no-pdf" onclick="removeVendorSignatureCard('${cardId}',${cardCounter})">刪除</button>` : ''}
+          <input type="text" id="name-${cardCounter}" placeholder="簽署人姓名 (必填)" style="flex:1;">
+          ${cardCounter > 1 ? `<button class="btn-danger no-pdf" onclick="removeSignatureCard('${cardId}', ${cardCounter})">刪除</button>` : ''}
         </div>
         
         <div class="canvas-container">
@@ -492,8 +198,8 @@
         </div>
         
         <div style="display: flex; justify-content: space-between; align-items: center;" class="no-pdf">
-          <button class="btn btn-outline" onclick="clearVendorCanvas(${cardCounter})">清除重簽</button>
-          <span style="font-size: 10px; color: #94a3b8;">請乙方人員在此處手寫簽名</span>
+          <button class="btn btn-outline" onclick="clearSingleCanvas(${cardCounter})">清除重簽</button>
+          <span style="font-size: 11px; color: #94a3b8;">請使用手指或筆在上方框內簽名</span>
         </div>
       </div>
     `;
@@ -502,183 +208,162 @@
 
     setTimeout(() => {
       const canvas = document.getElementById(canvasId);
-      if (canvas) {
-        canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 650;
-        canvas.height = 90;
-        const pad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
-        vendorSigPads.push({ id: cardCounter, pad: pad, canvas: canvas });
-      }
-    }, 100);
+      canvas.width = canvas.parentElement.clientWidth || 650;
+      canvas.height = 110;
+
+      const pad = new SignaturePad(canvas, { minWidth: 1.5, maxWidth: 3, penColor: "#0f172a" });
+      sigPadInstances.push({ id: cardCounter, pad: pad, canvas: canvas });
+    }, 50);
   }
 
-  function removeVendorSignatureCard(cardId, id) {
+  function removeSignatureCard(cardId, id) {
     document.getElementById(cardId).remove();
-    vendorSigPads = vendorSigPads.filter(item => item.id !== id);
+    sigPadInstances = sigPadInstances.filter(item => item.id !== id);
   }
 
-  function clearVendorCanvas(id) {
-    const item = vendorSigPads.find(i => i.id === id);
-    if (item && item.pad) item.pad.clear();
+  function clearSingleCanvas(id) {
+    const item = sigPadInstances.find(i => i.id === id);
+    if (item) item.pad.clear();
+  }
+
+  // 必填驗證邏輯：工程名稱、承攬廠商、預定施作日期、電話皆必填，且三項須知需全勾
+  function validateForm() {
+    const checks = document.querySelectorAll('.agree-check');
+    const allChecked = Array.from(checks).every(c => c.checked);
+
+    const projectName = document.getElementById('project-name').value.trim();
+    const vendorName = document.getElementById('vendor-name').value.trim();
+    const workDate = document.getElementById('work-date').value.trim();
+    const vendorPhone = document.getElementById('vendor-phone').value.trim();
+
+    const allRequiredFilled = projectName && vendorName && workDate && vendorPhone;
+
+    document.getElementById('save-btn').disabled = !(allChecked && allRequiredFilled);
   }
 
   function saveDataAndExportPDF() {
-    try {
-      let validSignatures = 0;
-      const isHotWork = document.querySelector('input[name="has-hotwork"]:checked').value === 'yes';
+    const projectName = document.getElementById('project-name').value.trim();
+    const vendorName = document.getElementById('vendor-name').value.trim();
+    const workDate = document.getElementById('work-date').value.trim();
+    const vendorPhone = document.getElementById('vendor-phone').value.trim();
 
-      // 檢查條款是否勾選
-      const checks = document.querySelectorAll('.agree-check');
-      const allChecked = Array.from(checks).every(c => c.checked);
-      if (!allChecked) {
-        alert("請勾選第一頁與第二頁的安全條款同意核取方塊！");
-        return;
-      }
-
-      // 1. 檢查乙方通用簽名
-      vendorSigPads.forEach(item => {
-        if (item.pad && !item.pad.isEmpty()) {
-          validSignatures++;
-          const dataUrl = item.pad.toDataURL();
-          const imgEle = document.getElementById(`img-vendor-${item.id}`);
-          if (imgEle) {
-            imgEle.src = dataUrl;
-            imgEle.style.display = 'block';
-          }
-          if (item.canvas && item.canvas.parentElement) {
-            item.canvas.parentElement.style.border = 'none';
-            item.canvas.style.display = 'none';
-          }
-        }
-      });
-
-      if (validSignatures === 0) {
-        alert("請至少讓一位乙方施工人員在電子簽名區完成手寫簽名！");
-        return;
-      }
-
-      // 2. 檢查動火作業簽名
-      if (isHotWork) {
-        if (!hwWorkerSigPad || hwWorkerSigPad.isEmpty()) {
-          alert("選擇【有動火作業】時，乙方動火人員必須於第 3 頁完成手寫簽名！");
-          return;
-        }
-        if (!ownerSigPad || ownerSigPad.isEmpty()) {
-          alert("選擇【有動火作業】時，甲方 (迪卡儂主管) 必須於第 3 頁完成審批簽名！");
-          return;
-        }
-
-        // 轉乙方動火簽名
-        const hwDataUrl = hwWorkerSigPad.toDataURL();
-        const hwImgEle = document.getElementById('img-hw-worker');
-        if (hwImgEle) {
-          hwImgEle.src = hwDataUrl;
-          hwImgEle.style.display = 'block';
-        }
-        const hwCanvas = document.getElementById('canvas-hw-worker');
-        if (hwCanvas && hwCanvas.parentElement) {
-          hwCanvas.parentElement.style.border = 'none';
-          hwCanvas.style.display = 'none';
-        }
-
-        // 轉甲方簽名
-        const ownerDataUrl = ownerSigPad.toDataURL();
-        const ownerImgEle = document.getElementById('img-owner');
-        if (ownerImgEle) {
-          ownerImgEle.src = ownerDataUrl;
-          ownerImgEle.style.display = 'block';
-        }
-        const ownerCanvas = document.getElementById('canvas-owner');
-        if (ownerCanvas && ownerCanvas.parentElement) {
-          ownerCanvas.parentElement.style.border = 'none';
-          ownerCanvas.style.display = 'none';
-        }
-      }
-
-      const formId = document.getElementById('form-id').value;
-      const vendorName = document.getElementById('vendor-name').value || "未填寫廠商";
-
-      alert("正在生成高解析度 PDF 並上傳至 Google Drive，請稍候 3~5 秒...");
-
-      document.body.classList.add('pdf-mode');
-
-      const element = document.getElementById('pdf-wrapper');
-      const opt = {
-        margin:       [8, 8, 8, 8],
-        filename:     `${vendorName}_${formId}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
-        
-        document.body.classList.remove('pdf-mode');
-
-        // 復原乙方通用簽名畫布
-        vendorSigPads.forEach(item => {
-          if (item.canvas) {
-            item.canvas.style.display = 'block';
-            if (item.canvas.parentElement) {
-              item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
-            }
-            const imgEle = document.getElementById(`img-vendor-${item.id}`);
-            if (imgEle) imgEle.style.display = 'none';
-          }
-        });
-
-        // 復原動火簽名畫布
-        if (isHotWork) {
-          const hwCanvas = document.getElementById('canvas-hw-worker');
-          if (hwCanvas) {
-            hwCanvas.style.display = 'block';
-            if (hwCanvas.parentElement) hwCanvas.parentElement.style.border = '1.5px dashed #94a3b8';
-            const hwImg = document.getElementById('img-hw-worker');
-            if (hwImg) hwImg.style.display = 'none';
-          }
-
-          const ownerCanvas = document.getElementById('canvas-owner');
-          if (ownerCanvas) {
-            ownerCanvas.style.display = 'block';
-            if (ownerCanvas.parentElement) ownerCanvas.parentElement.style.border = '1.5px dashed #94a3b8';
-            const ownerImg = document.getElementById('img-owner');
-            if (ownerImg) ownerImg.style.display = 'none';
-          }
-        }
-
-        if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
-          fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              formId: formId,
-              vendorName: vendorName,
-              vendorContact: document.getElementById('vendor-contact').value,
-              workPeriod: document.getElementById('work-period').value,
-              pdfBase64: pdfBase64
-            })
-          })
-          .then(res => res.json())
-          .then(res => {
-            if (res.status === 'success') {
-              alert(`成功！PDF 已命名為 [${vendorName}_${formId}.pdf] 並歸檔至 Google Drive！`);
-              generateNextFormId(); // 重新產生下一單單號
-            } else {
-              alert("雲端歸檔失敗：" + res.message);
-            }
-          })
-          .catch(err => {
-            alert(`成功！檔案 [${vendorName}_${formId}.pdf] 已下載並送出歸檔！`);
-            generateNextFormId();
-          });
-        } else {
-          alert("PDF 已儲存至本機！");
-        }
-
-      });
-
-    } catch (e) {
-      alert("生成過程發生錯誤：" + e.message);
+    if (!projectName || !vendorName || !workDate || !vendorPhone) {
+      alert("請確實填寫「工程名稱」、「承攬廠商」、「預定施作日期」與「聯絡電話」！");
+      return;
     }
+
+    let validSignatures = 0;
+    let newSignatures = [];
+    let nameMissing = false;
+
+    sigPadInstances.forEach(item => {
+      if (!item.pad.isEmpty()) {
+        const role = document.getElementById(`role-${item.id}`).value;
+        const nameInput = document.getElementById(`name-${item.id}`);
+        const name = nameInput ? nameInput.value.trim() : '';
+
+        if (!name) {
+          nameMissing = true;
+        }
+
+        validSignatures++;
+        const dataUrl = item.pad.toDataURL();
+
+        const imgEle = document.getElementById(`img-${item.id}`);
+        imgEle.src = dataUrl;
+        imgEle.style.display = 'block';
+        item.canvas.parentElement.style.border = 'none';
+        item.canvas.style.display = 'none';
+
+        newSignatures.push({ role: role, name: name, time: new Date().toLocaleString('zh-TW'), image: dataUrl });
+      }
+    });
+
+    if (nameMissing) {
+      alert("有簽名的人員請務必輸入「簽署人姓名」！");
+      sigPadInstances.forEach(item => {
+        item.canvas.style.display = 'block';
+        item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+        document.getElementById(`img-${item.id}`).style.display = 'none';
+      });
+      return;
+    }
+
+    if (validSignatures === 0 && historyLogs.length === 0) {
+      alert("請至少在簽名板上完成簽名！");
+      return;
+    }
+
+    const formId = document.getElementById('form-id').value;
+    newSignatures.forEach(s => historyLogs.push(s));
+
+    const formData = {
+      formId: formId,
+      projectName: projectName,
+      vendorName: vendorName,
+      vendorPhone: vendorPhone,
+      workDate: workDate,
+      historyLogs: historyLogs
+    };
+    localStorage.setItem('SAFETY_FORM_' + formId, JSON.stringify(formData));
+
+    document.body.classList.add('pdf-mode');
+
+    const inputs = document.querySelectorAll('#pdf-wrapper input');
+    const placeholders = [];
+    inputs.forEach((inp, idx) => {
+      placeholders[idx] = inp.placeholder;
+      inp.placeholder = '';
+    });
+
+    const element = document.getElementById('pdf-wrapper');
+    const opt = {
+      margin:       [5, 5, 5, 5],
+      filename:     `施工安全告知書_${projectName}_${vendorName}_${formId}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().outputPdf('datauristring').then(function(pdfBase64) {
+      
+      document.body.classList.remove('pdf-mode');
+      inputs.forEach((inp, idx) => {
+        inp.placeholder = placeholders[idx];
+      });
+
+      sigPadInstances.forEach(item => {
+        item.canvas.style.display = 'block';
+        item.canvas.parentElement.style.border = '1.5px dashed #94a3b8';
+        document.getElementById(`img-${item.id}`).style.display = 'none';
+      });
+      renderHistoryUI();
+
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            formId: formId,
+            projectName: projectName,
+            vendorName: vendorName,
+            vendorPhone: vendorPhone,
+            workDate: workDate,
+            pdfBase64: pdfBase64
+          })
+        })
+        .then(() => {
+          alert("成功！PDF 檔案已下載，且紀錄已自動備份歸檔至 Google 雲端硬碟！");
+        })
+        .catch(err => {
+          alert("PDF 已下載！但上傳雲端時發生問題。");
+        });
+      } else {
+        alert("PDF 下載成功！");
+      }
+
+    });
   }
 
   function loadData() {
@@ -687,7 +372,52 @@
       alert("請輸入單號！");
       return;
     }
-    alert(`已調閱單號 [${searchId}]，您可以進行補簽或補充動火許可內容。`);
+
+    const savedData = localStorage.getItem('SAFETY_FORM_' + searchId);
+    if (!savedData) {
+      alert("找不到該單號的歷史紀錄！");
+      return;
+    }
+
+    const data = JSON.parse(savedData);
+    document.getElementById('form-id').value = data.formId;
+    document.getElementById('project-name').value = data.projectName || '';
+    document.getElementById('vendor-name').value = data.vendorName || '';
+    document.getElementById('vendor-phone').value = data.vendorPhone || '';
+    document.getElementById('work-date').value = data.workDate || '';
+    historyLogs = data.historyLogs || [];
+
+    document.querySelectorAll('.agree-check').forEach(cb => cb.checked = true);
+    validateForm();
+
+    document.getElementById('sig-cards-container').innerHTML = '';
+    sigPadInstances = [];
+    addSignatureCard('追加/二次補簽');
+
+    renderHistoryUI();
+    alert(`已成功調閱單號 [${searchId}]！`);
+  }
+
+  function renderHistoryUI() {
+    if (historyLogs.length === 0) return;
+    
+    const historySection = document.getElementById('history-section');
+    const historyBox = document.getElementById('history-list-box');
+    historySection.style.display = 'block';
+    historyBox.innerHTML = '';
+
+    historyLogs.forEach((log, index) => {
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML = `
+        <div>
+          <strong>[${log.role}] ${log.name}</strong><br>
+          <small style="color:#64748b;">簽署時間：${log.time}</small>
+        </div>
+        <img src="${log.image}" style="height: 40px; border: 1px solid #cbd5e1; background: #fff; padding: 2px; border-radius: 4px;">
+      `;
+      historyBox.appendChild(item);
+    });
   }
 </script>
 
